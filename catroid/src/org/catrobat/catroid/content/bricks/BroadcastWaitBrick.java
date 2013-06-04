@@ -35,6 +35,7 @@ import org.catrobat.catroid.ui.dialogs.BrickTextDialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentActivity;
@@ -51,6 +52,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
@@ -59,6 +61,8 @@ public class BroadcastWaitBrick extends BrickBaseType {
 	private String broadcastMessage = "";
 	private BroadcastScript waitScript;
 	private transient String oldMessage = "";
+	private transient String currentSelected = "";
+	private transient AdapterView<?> adapterView;
 
 	public BroadcastWaitBrick() {
 
@@ -80,6 +84,10 @@ public class BroadcastWaitBrick extends BrickBaseType {
 		this.broadcastMessage = selectedMessage;
 		this.oldMessage = selectedMessage;
 		MessageContainer.addMessage(this.broadcastMessage);
+	}
+
+	public String getSelectedMessage() {
+		return currentSelected;
 	}
 
 	public String getBroadcastMessage() {
@@ -143,17 +151,21 @@ public class BroadcastWaitBrick extends BrickBaseType {
 			private boolean start = true;
 
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String selectedString = ((String) parent.getItemAtPosition(position)).trim();
 				if (start) {
 					start = false;
+					currentSelected = selectedString;
 					return;
 				}
-				broadcastMessage = ((String) parent.getItemAtPosition(pos)).trim();
+				broadcastMessage = selectedString;
 				if (broadcastMessage == context.getString(R.string.new_broadcast_message)) {
 					broadcastMessage = "";
 				} else {
 					oldMessage = broadcastMessage;
+					currentSelected = selectedString;
 				}
+				adapterView = parent;
 			}
 
 			@Override
@@ -174,7 +186,9 @@ public class BroadcastWaitBrick extends BrickBaseType {
 		broadcastWaitSpinner.setFocusable(false);
 		SpinnerAdapter broadcastWaitSpinnerAdapter = MessageContainer.getMessageAdapter(context);
 		broadcastWaitSpinner.setAdapter(broadcastWaitSpinnerAdapter);
-		oldMessage = context.getString(R.string.brick_broadcast_default_value);
+		if (broadcastWaitSpinnerAdapter.getCount() > 1) {
+			oldMessage = broadcastWaitSpinnerAdapter.getItem(1).toString();
+		}
 		setSpinnerSelection(broadcastWaitSpinner);
 		return prototypeView;
 	}
@@ -184,6 +198,16 @@ public class BroadcastWaitBrick extends BrickBaseType {
 		LinearLayout layout = (LinearLayout) view.findViewById(R.id.brick_broadcast_wait_layout);
 		Drawable background = layout.getBackground();
 		background.setAlpha(alphaValue);
+
+		TextView textBroadcastWaitLabel = (TextView) view.findViewById(R.id.brick_broadcast_wait_label);
+		textBroadcastWaitLabel.setTextColor(textBroadcastWaitLabel.getTextColors().withAlpha(alphaValue));
+		Spinner broadcastSpinner = (Spinner) view.findViewById(R.id.brick_broadcast_wait_spinner);
+		ColorStateList color = textBroadcastWaitLabel.getTextColors().withAlpha(alphaValue);
+		broadcastSpinner.getBackground().setAlpha(alphaValue);
+		if (adapterView != null) {
+			((TextView) adapterView.getChildAt(0)).setTextColor(color);
+		}
+
 		this.alphaValue = (alphaValue);
 		return view;
 	}

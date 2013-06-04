@@ -60,9 +60,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
@@ -97,15 +95,12 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.d("CatroidFragmentTag", "ScriptActivityFragment msg onCreate");
-
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Log.d("CatroidFragmentTag", "ScriptActivityFragment msg onCreateView");
 		View rootView = inflater.inflate(R.layout.fragment_script, null);
 
 		listView = (DragAndDropListView) rootView.findViewById(R.id.brick_list_view);
@@ -115,8 +110,6 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		Log.d("CatroidFragmentTag", "ScriptActivityFragment msg onActivityCreated");
-
 		super.onActivityCreated(savedInstanceState);
 
 		if (savedInstanceState != null) {
@@ -145,8 +138,6 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.d("CatroidFragmentTag", "ScriptActivityFragment msg onStart");
-
 		sprite = ProjectManager.INSTANCE.getCurrentSprite();
 		if (sprite == null) {
 			return;
@@ -157,7 +148,6 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 
 	@Override
 	public void onResume() {
-		Log.d("CatroidFragmentTag", "ScriptActivityFragment msg onResume");
 		super.onResume();
 
 		if (!Utils.checkForExternalStorageAvailableAndDisplayErrorIfNot(getActivity())) {
@@ -184,8 +174,6 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.d("CatroidFragmentTag", "ScriptActivityFragment msg onPause");
-
 		ProjectManager projectManager = ProjectManager.INSTANCE;
 		if (projectManager.getCurrentProject() != null) {
 			projectManager.saveProject();
@@ -236,29 +224,11 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 	}
 
 	public BrickAdapter getAdapter() {
-		BottomBar.enableButtons(getActivity());
-		Log.d("CatroidFragmentTag", "ScriptActivityFragment msg getAdapter");
-
-		LinearLayout llout_add = (LinearLayout) getActivity().findViewById(R.id.button_add);
-		LinearLayout llout_play = (LinearLayout) getActivity().findViewById(R.id.button_play);
-
-		llout_add.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Toast.makeText(getActivity(), "toast here llout_add", Toast.LENGTH_LONG).show();
-				handleAddButton();
-			}
-		});
-		BottomBar.setButtonVisible(getSherlockActivity());
-		BottomBar.enableButtons(getSherlockActivity());
 		return adapter;
 	}
 
 	@Override
 	public DragAndDropListView getListView() {
-		Log.d("CatroidFragmentTag", "ScriptActivityFragment msg getListView");
-
 		return listView;
 	}
 
@@ -291,8 +261,6 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 	}
 
 	private void initListeners() {
-		Log.d("CatroidFragmentTag", "ScriptActivityFragment msg initListeners");
-
 		sprite = ProjectManager.INSTANCE.getCurrentSprite();
 		if (sprite == null) {
 			return;
@@ -302,7 +270,6 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				handleAddButton();
 			}
 		});
@@ -323,7 +290,7 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 
 	private void showCategoryFragment() {
 		BrickCategoryFragment brickCategoryFragment = new BrickCategoryFragment();
-		brickCategoryFragment.setOnCategorySelectedListener(ScriptFragment.this);
+		brickCategoryFragment.setOnCategorySelectedListener(this);
 		FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 

@@ -128,16 +128,16 @@ public class NewVariableDialog extends SherlockDialogFragment {
 			if (ProjectManager.getInstance().getCurrentProject().getUserVariables()
 					.getUserVariable(variableName, ProjectManager.getInstance().getCurrentSprite()) != null) {
 
-				Toast.makeText(getActivity(), R.string.formula_editor_existing_user_variable, Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), R.string.formula_editor_existing_variable, Toast.LENGTH_LONG).show();
 
 			} else {
 				ProjectManager.getInstance().getCurrentProject().getUserVariables()
-						.addProjectUserVariable(variableName, 0.0);
+						.addProjectUserVariable(variableName);
 				variableDialogListenerListFinishNewVariableDialog();
 			}
 		} else if (localVariable.isChecked()) {
 			ProjectManager.getInstance().getCurrentProject().getUserVariables()
-					.addSpriteUserVariable(variableName, 0.0);
+					.addSpriteUserVariable(variableName);
 			variableDialogListenerListFinishNewVariableDialog();
 		}
 	}
@@ -170,7 +170,7 @@ public class NewVariableDialog extends SherlockDialogFragment {
 				if (ProjectManager.getInstance().getCurrentProject().getUserVariables()
 						.getUserVariable(variableName, ProjectManager.getInstance().getCurrentSprite()) != null) {
 
-					Toast.makeText(getActivity(), R.string.formula_editor_existing_user_variable, Toast.LENGTH_SHORT)
+					Toast.makeText(getActivity(), R.string.formula_editor_existing_variable, Toast.LENGTH_SHORT)
 							.show();
 
 					positiveButton.setEnabled(false);
