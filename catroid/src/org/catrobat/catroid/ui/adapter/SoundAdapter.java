@@ -80,7 +80,8 @@ public class SoundAdapter extends ArrayAdapter<SoundInfo> implements ScriptActiv
 
 	private static class ViewHolder {
 		private ImageButton playButton;
-		private ImageButton pauseButton;
+		private ImageButton stopButton;
+		//private ImageButton pauseButton;
 		private LinearLayout soundFragmentButtonLayout;
 		private CheckBox checkbox;
 		private TextView titleTextView;
@@ -102,10 +103,12 @@ public class SoundAdapter extends ArrayAdapter<SoundInfo> implements ScriptActiv
 
 			holder = new ViewHolder();
 			holder.playButton = (ImageButton) convertView.findViewById(R.id.fragment_sound_item_play_image_button);
-			holder.pauseButton = (ImageButton) convertView.findViewById(R.id.fragment_sound_item_pause_image_button);
+			holder.stopButton = (ImageButton) convertView.findViewById(R.id.fragment_sound_item_stop_image_button);
+			//holder.pauseButton = (ImageButton) convertView.findViewById(R.id.fragment_sound_item_pause_image_button);
 
 			holder.playButton.setVisibility(Button.VISIBLE);
-			holder.pauseButton.setVisibility(Button.GONE);
+			holder.stopButton.setVisibility(Button.GONE);
+			//holder.pauseButton.setVisibility(Button.GONE);
 
 			holder.soundFragmentButtonLayout = (LinearLayout) convertView
 					.findViewById(R.id.fragment_sound_item_main_linear_layout);
@@ -131,7 +134,8 @@ public class SoundAdapter extends ArrayAdapter<SoundInfo> implements ScriptActiv
 
 		if (soundInfo != null) {
 			holder.playButton.setTag(position);
-			holder.pauseButton.setTag(position);
+			holder.stopButton.setTag(position);
+			//holder.pauseButton.setTag(position);
 			holder.titleTextView.setText(soundInfo.getTitle());
 
 			holder.checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -195,7 +199,8 @@ public class SoundAdapter extends ArrayAdapter<SoundInfo> implements ScriptActiv
 
 				if (soundInfo.isPlaying) {
 					holder.playButton.setVisibility(Button.GONE);
-					holder.pauseButton.setVisibility(Button.VISIBLE);
+					holder.stopButton.setVisibility(Button.VISIBLE);
+					//holder.pauseButton.setVisibility(Button.VISIBLE);
 
 					holder.timeSeperatorTextView.setVisibility(TextView.VISIBLE);
 					holder.timePlayedChronometer.setVisibility(Chronometer.VISIBLE);
@@ -209,7 +214,8 @@ public class SoundAdapter extends ArrayAdapter<SoundInfo> implements ScriptActiv
 					}
 				} else {
 					holder.playButton.setVisibility(Button.VISIBLE);
-					holder.pauseButton.setVisibility(Button.GONE);
+					holder.stopButton.setVisibility(Button.GONE);
+					//holder.pauseButton.setVisibility(Button.GONE);
 
 					holder.timeSeperatorTextView.setVisibility(TextView.GONE);
 					holder.timePlayedChronometer.setVisibility(Chronometer.GONE);
@@ -237,7 +243,8 @@ public class SoundAdapter extends ArrayAdapter<SoundInfo> implements ScriptActiv
 
 			if (selectMode != ListView.CHOICE_MODE_NONE) {
 				holder.playButton.setOnClickListener(null);
-				holder.pauseButton.setOnClickListener(null);
+				holder.stopButton.setOnClickListener(null);
+				//holder.pauseButton.setOnClickListener(null);
 			} else {
 				holder.playButton.setOnClickListener(new OnClickListener() {
 					@Override
@@ -248,11 +255,13 @@ public class SoundAdapter extends ArrayAdapter<SoundInfo> implements ScriptActiv
 					}
 				});
 
-				holder.pauseButton.setOnClickListener(new OnClickListener() {
+				holder.stopButton.setOnClickListener(new OnClickListener() {
+					//				holder.pauseButton.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						if (onSoundEditListener != null) {
-							onSoundEditListener.onSoundPause(view);
+							onSoundEditListener.onSoundStop(view);
+							//onSoundEditListener.onSoundPause(view);
 						}
 					}
 				});
@@ -321,7 +330,9 @@ public class SoundAdapter extends ArrayAdapter<SoundInfo> implements ScriptActiv
 
 		public void onSoundPlay(View view);
 
-		public void onSoundPause(View view);
+		public void onSoundStop(View view);
+
+		//public void onSoundPause(View view);
 
 		public void onSoundChecked();
 	}

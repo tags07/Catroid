@@ -66,12 +66,12 @@
 	            android:src="@drawable/ic_media_play" />
 	
 	        <ImageButton
-	            android:id="@+id/fragment_sound_item_pause_image_button"
+	            android:id="@+id/fragment_sound_item_stop_image_button"
 	            android:layout_width="50dp"
 	            android:layout_height="50dp"
 	            android:background="@drawable/sound_fragment_icon_border_active"
-	            android:contentDescription="@string/sound_pause"
-	            android:src="@drawable/ic_media_pause" />
+	            android:contentDescription="@string/sound_stop"
+	            android:src="@drawable/ic_media_stop" />
 	    </LinearLayout>
 	
 	    <LinearLayout

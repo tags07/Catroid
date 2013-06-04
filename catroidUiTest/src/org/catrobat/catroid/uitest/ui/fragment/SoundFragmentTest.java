@@ -234,7 +234,7 @@ public class SoundFragmentTest extends ActivityInstrumentationTestCase2<MainMenu
 		assertFalse("Mediaplayer is playing although no play button was touched", soundInfo.isPlaying);
 
 		ImageButton playImageButton = (ImageButton) solo.getView(R.id.fragment_sound_item_play_image_button);
-		ImageButton pauseImageButton = (ImageButton) solo.getView(R.id.fragment_sound_item_pause_image_button);
+		ImageButton pauseImageButton = (ImageButton) solo.getView(R.id.fragment_sound_item_stop_image_button);
 
 		solo.clickOnView(playImageButton);
 		solo.sleep(timeToWait);
@@ -666,7 +666,7 @@ public class SoundFragmentTest extends ActivityInstrumentationTestCase2<MainMenu
 		assertTrue("Play button " + getAssertMessageAffix(playButtonVisibility),
 				solo.getView(R.id.fragment_sound_item_play_image_button).getVisibility() == playButtonVisibility);
 		assertTrue("Pause button " + getAssertMessageAffix(pauseButtonVisibility),
-				solo.getView(R.id.fragment_sound_item_pause_image_button).getVisibility() == pauseButtonVisibility);
+				solo.getView(R.id.fragment_sound_item_stop_image_button).getVisibility() == pauseButtonVisibility);
 		assertTrue("Sound name " + getAssertMessageAffix(soundNameVisibility),
 				solo.getView(R.id.fragment_sound_item_title_text_view).getVisibility() == soundNameVisibility);
 		assertTrue("Chronometer " + getAssertMessageAffix(timePlayedVisibility),

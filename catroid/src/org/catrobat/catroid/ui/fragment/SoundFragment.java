@@ -324,9 +324,14 @@ public class SoundFragment extends ScriptActivityFragment implements OnSoundEdit
 	}
 
 	@Override
-	public void onSoundPause(View view) {
-		handlePauseSoundButton(view);
+	public void onSoundStop(View view) {
+		handleStopSoundButton(view);
 	}
+
+	//@Override
+	//public void onSoundPause(View view) {
+	//	  handlePauseSoundButton(view);
+	//}
 
 	@Override
 	public void onSoundChecked() {
@@ -421,11 +426,16 @@ public class SoundFragment extends ScriptActivityFragment implements OnSoundEdit
 		return mediaPlayer.isPlaying();
 	}
 
-	public void handlePauseSoundButton(View view) {
-		final int position = (Integer) view.getTag();
-		pauseSound(soundInfoList.get(position));
+	public void handleStopSoundButton(View view) {
+		stopSound();
 		adapter.notifyDataSetChanged();
 	}
+
+	//public void handlePauseSoundButton(View view) {
+	//	  final int position = (Integer) view.getTag();
+	//	  pauseSound(soundInfoList.get(position));
+	//	  adapter.notifyDataSetChanged();
+	//}
 
 	public void pauseSound(SoundInfo soundInfo) {
 		mediaPlayer.pause();
