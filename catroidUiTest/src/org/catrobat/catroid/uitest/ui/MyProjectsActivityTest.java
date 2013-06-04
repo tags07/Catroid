@@ -806,7 +806,6 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.clickOnButton(solo.getString(R.string.main_menu_programs));
 		solo.waitForActivity(MyProjectsActivity.class.getSimpleName());
 		solo.waitForFragmentById(R.id.fragment_projects_list);
-
 		UiTestUtils.openActionMode(solo, delete, R.id.delete, getActivity());
 
 		solo.clickOnCheckBox(0);
