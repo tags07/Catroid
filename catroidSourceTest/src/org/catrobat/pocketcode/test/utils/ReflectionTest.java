@@ -65,8 +65,8 @@ public class ReflectionTest extends TestCase {
 	}
 
 	public void testIdenticalReflectionClassInTestProjects() throws IOException {
-		final String[] FILES = { "../catroidTest/src/org/catrobat/catroid/test/utils/Reflection.java",
-				"../catroidUiTest/src/org/catrobat/catroid/uitest/util/Reflection.java" };
+		final String[] FILES = { "../catroidTest/src/org/catrobat/pocketcode/test/utils/Reflection.java",
+				"../catroidUiTest/src/org/catrobat/pocketcode/uitest/util/Reflection.java" };
 
 		List<SmartFileContent> fileContentList = new ArrayList<SmartFileContent>();
 		for (String file : FILES) {
