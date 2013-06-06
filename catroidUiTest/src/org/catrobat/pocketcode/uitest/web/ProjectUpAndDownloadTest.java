@@ -291,7 +291,7 @@ public class ProjectUpAndDownloadTest extends ActivityInstrumentationTestCase2<M
 		UiTestUtils.createTestProject();
 
 		//Adds a sufficient number of media files so that the project is big enough (16 files ~1MB) for download-testing
-		int numberMediaFiles = 10;
+		int numberMediaFiles = 1;
 		String soundName = "testSound";
 
 		ArrayList<SoundInfo> soundInfoList = ProjectManager.INSTANCE.getCurrentSprite().getSoundList();
@@ -425,6 +425,8 @@ public class ProjectUpAndDownloadTest extends ActivityInstrumentationTestCase2<M
 		assertFalse("testProject was not deleted!", directory.exists());
 
 		solo.clickOnButton(solo.getString(R.string.main_menu_new));
+		solo.clearEditText(0);
+		solo.clickOnEditText(0);
 		solo.enterText(0, projectToCreate);
 		solo.goBack();
 		solo.clickOnButton(solo.getString(R.string.ok));
