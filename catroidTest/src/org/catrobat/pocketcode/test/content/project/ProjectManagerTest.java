@@ -67,7 +67,7 @@ public class ProjectManagerTest extends InstrumentationTestCase {
 		ProjectManager projectManager = ProjectManager.getInstance();
 		assertNull("there is a current sprite set", projectManager.getCurrentSprite());
 		assertNull("there is a current script set", projectManager.getCurrentScript());
-		Context context = getInstrumentation().getContext().createPackageContext("org.catrobat.catroid",
+		Context context = getInstrumentation().getContext().createPackageContext("org.catrobat.pocketcode",
 				Context.CONTEXT_IGNORE_SECURITY);
 
 		// initializeNewProject
