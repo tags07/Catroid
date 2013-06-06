@@ -28,8 +28,6 @@ import java.util.ArrayList;
 
 import org.catrobat.pocketcode.ProjectManager;
 import org.catrobat.pocketcode.R;
-import org.catrobat.pocketcode.uitest.util.Reflection;
-import org.catrobat.pocketcode.uitest.util.UiTestUtils;
 import org.catrobat.pocketcode.common.Constants;
 import org.catrobat.pocketcode.common.SoundInfo;
 import org.catrobat.pocketcode.common.StandardProjectHandler;
@@ -37,6 +35,8 @@ import org.catrobat.pocketcode.content.Project;
 import org.catrobat.pocketcode.io.StorageHandler;
 import org.catrobat.pocketcode.ui.MainMenuActivity;
 import org.catrobat.pocketcode.ui.ProgramMenuActivity;
+import org.catrobat.pocketcode.uitest.util.Reflection;
+import org.catrobat.pocketcode.uitest.util.UiTestUtils;
 import org.catrobat.pocketcode.utils.UtilFile;
 import org.catrobat.pocketcode.web.ServerCalls;
 import org.json.JSONException;
@@ -466,7 +466,7 @@ public class ProjectUpAndDownloadTest extends ActivityInstrumentationTestCase2<M
 		solo.clickOnButton(solo.getString(R.string.upload_button));
 		solo.sleep(500);
 
-		boolean success = solo.waitForText(solo.getString(R.string.success_project_upload), 1, 50000);
+		boolean success = solo.waitForText(solo.getString(R.string.success_project_upload), 1, 80000);
 		assertTrue("Upload failed. Internet connection?", success);
 		String resultString = (String) Reflection.getPrivateField(ServerCalls.getInstance(), "resultString");
 
@@ -489,7 +489,7 @@ public class ProjectUpAndDownloadTest extends ActivityInstrumentationTestCase2<M
 		intent.setAction(Intent.ACTION_VIEW);
 		intent.setData(Uri.parse(downloadUrl));
 		solo.goBack();
-		launchActivityWithIntent("org.catrobat.catroid", MainMenuActivity.class, intent);
+		launchActivityWithIntent("org.catrobat.pocketcode", MainMenuActivity.class, intent);
 		solo.sleep(500);
 		assertTrue("OverwriteRenameDialog not shown.", solo.searchText(solo.getString(R.string.overwrite_text)));
 		solo.clickOnText(solo.getString(R.string.overwrite_replace));
