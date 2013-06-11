@@ -47,7 +47,6 @@ public class ProgramMenuActivity extends SherlockFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_program_menu);
 
 		findViewById(R.id.button_add).setVisibility(View.GONE);

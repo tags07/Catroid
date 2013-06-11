@@ -101,6 +101,7 @@ public class ScriptActivity extends SherlockFragmentActivity {
 
 	@Override
 	protected void onResume() {
+		Log.e("log", "---------------");
 		// TODO Auto-generated method stub
 		super.onResume();
 		Log.d("ScriptActivity", "ScriptActivityOnResume");
@@ -136,7 +137,18 @@ public class ScriptActivity extends SherlockFragmentActivity {
 				R.layout.activity_script_spinner_item, getResources().getStringArray(
 						R.array.script_activity_spinner_items));
 
+		//		actionBar.addOnMenuVisibilityListener(new OnMenuVisibilityListener() {
+		//
+		//			@Override
+		//			public void onMenuVisibilityChanged(boolean isVisible) {
+		//				if (isVisible && currentFragmentPosition == FRAGMENT_SOUNDS && soundFragment.isSoundPlaying()) {
+		//					soundFragment.stopSoundAndUpdateList();
+		//				}
+		//			}
+		//		});
+
 		actionBar.setListNavigationCallbacks(spinnerAdapter, new OnNavigationListener() {
+
 			@Override
 			public boolean onNavigationItemSelected(int itemPosition, long itemId) {
 				if (isHoveringActive()) {
@@ -254,6 +266,9 @@ public class ScriptActivity extends SherlockFragmentActivity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		if (currentFragment != null) {
 			handleShowDetails(currentFragment.getShowDetails(), menu.findItem(R.id.show_details));
+		}
+		if (currentFragmentPosition == FRAGMENT_SOUNDS && soundFragment.isSoundPlaying()) {
+			soundFragment.stopSoundAndUpdateList();
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
