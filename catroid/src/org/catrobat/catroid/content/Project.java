@@ -30,7 +30,7 @@ import java.util.List;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.MessageContainer;
-import org.catrobat.catroid.common.Values;
+import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.BroadcastBrick;
 import org.catrobat.catroid.content.bricks.BroadcastReceiverBrick;
@@ -64,8 +64,8 @@ public class Project implements Serializable {
 		xmlHeader.setApplicationBuildNumber(Constants.APPLICATION_BUILD_NUMBER);
 
 		ifLandscapeSwitchWidthAndHeight();
-		xmlHeader.virtualScreenWidth = Values.SCREEN_WIDTH;
-		xmlHeader.virtualScreenHeight = Values.SCREEN_HEIGHT;
+		xmlHeader.virtualScreenWidth = ScreenValues.SCREEN_WIDTH;
+		xmlHeader.virtualScreenHeight = ScreenValues.SCREEN_HEIGHT;
 		setDeviceData(context);
 
 		MessageContainer.clear();
@@ -83,10 +83,10 @@ public class Project implements Serializable {
 	}
 
 	private void ifLandscapeSwitchWidthAndHeight() {
-		if (Values.SCREEN_WIDTH > Values.SCREEN_HEIGHT) {
-			int tmp = Values.SCREEN_HEIGHT;
-			Values.SCREEN_HEIGHT = Values.SCREEN_WIDTH;
-			Values.SCREEN_WIDTH = tmp;
+		if (ScreenValues.SCREEN_WIDTH > ScreenValues.SCREEN_HEIGHT) {
+			int tmp = ScreenValues.SCREEN_HEIGHT;
+			ScreenValues.SCREEN_HEIGHT = ScreenValues.SCREEN_WIDTH;
+			ScreenValues.SCREEN_WIDTH = tmp;
 		}
 
 	}
@@ -138,14 +138,6 @@ public class Project implements Serializable {
 		xmlHeader.setCatrobatLanguageVersion(catrobatLanguageVersion);
 	}
 
-	public boolean isManualScreenshot() {
-		return xmlHeader.isProgramScreenshotManuallyTaken();
-	}
-
-	public void setManualScreenshot(boolean manualScreenshot) {
-		xmlHeader.setProgramScreenshotManuallyTaken(manualScreenshot);
-	}
-
 	public void setDeviceData(Context context) {
 		// TODO add other header values
 		xmlHeader.setDeviceName(Build.MODEL);
@@ -173,22 +165,20 @@ public class Project implements Serializable {
 		List<Sprite> spriteList = getSpriteList();
 		if (spriteList != null) {
 			for (Sprite currentSprite : spriteList) {
-				for (int scriptIndex = 0; scriptIndex < currentSprite.getNumberOfScripts(); ++scriptIndex) {
+				for (int scriptIndex = 0; scriptIndex < currentSprite.getNumberOfScripts(); scriptIndex++) {
 					Script currentScript = currentSprite.getScript(scriptIndex);
-					if (currentScript.getClass().getSimpleName().equals(BroadcastScript.class.getSimpleName())) {
-						addMessageToList(
-								((BroadcastReceiverBrick) currentScript.getScriptBrick()).getSelectedMessage(),
-								usedMessages);
-					}
-					List<Brick> brickList = currentScript.getBrickList();
-					if (brickList != null) {
-						for (Brick currentBrick : brickList) {
-							if (currentBrick.getClass().getSimpleName().equals(BroadcastBrick.class.getSimpleName())) {
-								addMessageToList(((BroadcastBrick) currentBrick).getSelectedMessage(), usedMessages);
-							} else if (currentBrick.getClass().getSimpleName()
-									.equals(BroadcastWaitBrick.class.getSimpleName())) {
-								addMessageToList(((BroadcastWaitBrick) currentBrick).getSelectedMessage(), usedMessages);
-							}
+
+					for (int brickIndex = 0; brickIndex < currentScript.getBrickList().size(); brickIndex++) {
+						Brick currentBrick = currentScript.getBrick(brickIndex);
+						if (currentBrick instanceof BroadcastReceiverBrick) {
+							usedMessages = addMessageToList(
+									((BroadcastReceiverBrick) currentBrick).getBroadcastMessage(), usedMessages);
+						} else if (currentBrick instanceof BroadcastBrick) {
+							usedMessages = addMessageToList(((BroadcastBrick) currentBrick).getBroadcastMessage(),
+									usedMessages);
+						} else if (currentBrick instanceof BroadcastWaitBrick) {
+							usedMessages = addMessageToList(((BroadcastWaitBrick) currentBrick).getBroadcastMessage(),
+									usedMessages);
 						}
 					}
 				}
@@ -197,9 +187,10 @@ public class Project implements Serializable {
 		MessageContainer.removeOtherMessages(usedMessages);
 	}
 
-	private void addMessageToList(String message, List<String> list) {
+	private List<String> addMessageToList(String message, List<String> list) {
 		if (message != null && !message.equals("") && !list.contains(message)) {
 			list.add(message);
 		}
+		return list;
 	}
 }
