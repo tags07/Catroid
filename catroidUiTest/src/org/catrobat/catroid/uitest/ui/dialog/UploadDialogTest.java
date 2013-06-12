@@ -147,8 +147,9 @@ public class UploadDialogTest extends ActivityInstrumentationTestCase2<MainMenuA
 		solo.sleep(300);
 
 		// workaround - Ok button not clickable
-		solo.sendKey(Solo.ENTER);
-		solo.sendKey(Solo.ENTER);
+		solo.clickOnText(solo.getString(R.string.ok));
+		//		solo.sendKey(Solo.ENTER);
+		//		solo.sendKey(Solo.ENTER);
 
 		solo.waitForDialogToClose(500);
 		solo.goBack();
