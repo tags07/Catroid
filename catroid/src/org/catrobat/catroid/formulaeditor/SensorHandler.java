@@ -118,8 +118,24 @@ public class SensorHandler implements SensorEventListener {
 				orientations = new float[3];
 				getRotationMatrixFromVector(instance.rotationMatrix, instance.rotationVector);
 				android.hardware.SensorManager.getOrientation(instance.rotationMatrix, orientations);
+
+				float xInclinationUsedToExtendRangeOfRoll = orientations[2] * radianToDegreeConst * -1f;
+
 				sensorValue = Double.valueOf(orientations[1]);
-				return sensorValue * radianToDegreeConst * -1f;
+
+				if (java.lang.Math.abs(xInclinationUsedToExtendRangeOfRoll) <= 90f) {
+					return sensorValue * radianToDegreeConst * -1f;
+				} else {
+					float uncorrectedXInclination = sensorValue.floatValue() * radianToDegreeConst * -1f;
+
+					if (uncorrectedXInclination > 0f) {
+						return (double) 180f - uncorrectedXInclination;
+					} else {
+						return (double) -180f - uncorrectedXInclination;
+					}
+				}
+				//				sensorValue = Double.valueOf(orientations[1]);
+				//				return sensorValue * radianToDegreeConst * -1f;
 		}
 
 		return 0d;
