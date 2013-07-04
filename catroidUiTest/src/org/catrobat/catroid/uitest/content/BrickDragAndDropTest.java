@@ -37,7 +37,7 @@ import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.Display;
+import android.util.DisplayMetrics;
 import android.widget.ListView;
 
 import com.jayway.android.robotium.solo.Solo;
@@ -123,13 +123,13 @@ public class BrickDragAndDropTest extends ActivityInstrumentationTestCase2<MainM
 		solo.clickOnScreen(20, yPositionList.get(1));
 		solo.clickOnText(solo.getString(R.string.brick_context_dialog_move_brick));
 
-		Display display = solo.getCurrentActivity().getWindowManager().getDefaultDisplay();
+		DisplayMetrics displayMetrics = new DisplayMetrics();
+		solo.getCurrentActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-		@SuppressWarnings("deprecation")
-		int height = display.getHeight();
+		int height = displayMetrics.heightPixels;
 
 		solo.sleep(200);
-		solo.drag(20, 20, 300, height - 20, 100);
+		solo.drag(50, 50, 300, height - 20, 100);
 		// just to get focus and get the correct list
 		solo.clickOnText(scriptsName);
 		solo.clickOnText(scriptsName);
