@@ -36,10 +36,10 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.jayway.android.robotium.solo.SoloCompatibilityAbs;
 
 public class ScriptActivityTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {
-	private Solo solo = null;
+	private SoloCompatibilityAbs solo = null;
 
 	public ScriptActivityTest() {
 		super(MainMenuActivity.class);
@@ -51,7 +51,7 @@ public class ScriptActivityTest extends ActivityInstrumentationTestCase2<MainMen
 		UiTestUtils.prepareStageForTest();
 		UiTestUtils.createTestProject();
 
-		solo = new Solo(getInstrumentation(), getActivity());
+		solo = new SoloCompatibilityAbs(getInstrumentation(), getActivity());
 		UiTestUtils.getIntoScriptActivityFromMainMenu(solo);
 	}
 
@@ -79,7 +79,7 @@ public class ScriptActivityTest extends ActivityInstrumentationTestCase2<MainMen
 
 		// Note that the activity is _indeed_ rotated on your device/emulator!
 		// Robotium can _force_ the activity to be in landscape mode (and so could we, programmatically)
-		solo.setActivityOrientation(Solo.LANDSCAPE);
+		solo.setActivityOrientation(SoloCompatibilityAbs.LANDSCAPE);
 		solo.sleep(200);
 
 		assertEquals(ScriptActivity.class.getSimpleName() + " not set to be in portrait mode in AndroidManifest.xml!",

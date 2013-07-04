@@ -51,6 +51,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.jayway.android.robotium.solo.Solo;
+import com.jayway.android.robotium.solo.SoloCompatibilityAbs;
 
 public class SoundFragmentTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {
 	private static final int RESOURCE_SOUND = org.catrobat.catroid.uitest.R.raw.longsound;
@@ -63,7 +64,7 @@ public class SoundFragmentTest extends ActivityInstrumentationTestCase2<MainMenu
 	private static final String FIRST_TEST_SOUND_NAME = "testSound1";
 	private static final String SECOND_TEST_SOUND_NAME = "testSound2";
 
-	private Solo solo;
+	private SoloCompatibilityAbs solo;
 
 	private String rename;
 	private String renameDialogTitle;
@@ -116,7 +117,7 @@ public class SoundFragmentTest extends ActivityInstrumentationTestCase2<MainMenu
 		externalSoundFile = UiTestUtils.createTestMediaFile(Constants.DEFAULT_ROOT + "/externalSoundFile.mp3",
 				RESOURCE_SOUND, getActivity());
 
-		solo = new Solo(getInstrumentation(), getActivity());
+		solo = new SoloCompatibilityAbs(getInstrumentation(), getActivity());
 
 		UiTestUtils.getIntoSoundsFromMainMenu(solo);
 
@@ -384,7 +385,7 @@ public class SoundFragmentTest extends ActivityInstrumentationTestCase2<MainMenu
 		assertTrue("No EditText with actual sound name", solo.searchEditText(SECOND_TEST_SOUND_NAME));
 
 		UiTestUtils.enterText(solo, 0, newSoundName);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 
 		// If an already existing name was entered a counter should be appended
 		String expectedNewSoundName = newSoundName + "1";
@@ -651,7 +652,7 @@ public class SoundFragmentTest extends ActivityInstrumentationTestCase2<MainMenu
 		assertTrue("No EditText with actual sound name", solo.searchEditText(soundToRename));
 
 		UiTestUtils.enterText(solo, 0, newSoundName);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 	}
 
 	private SoundFragment getSoundFragment() {

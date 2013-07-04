@@ -52,11 +52,11 @@ import android.content.res.Configuration;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.jayway.android.robotium.solo.SoloCompatibilityAbs;
 
 public class ProgramMenuActivityTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {
 
-	private Solo solo;
+	private SoloCompatibilityAbs solo;
 
 	public ProgramMenuActivityTest() {
 		super(MainMenuActivity.class);
@@ -66,7 +66,7 @@ public class ProgramMenuActivityTest extends ActivityInstrumentationTestCase2<Ma
 	public void setUp() throws Exception {
 		super.setUp();
 		UiTestUtils.prepareStageForTest();
-		solo = new Solo(getInstrumentation(), getActivity());
+		solo = new SoloCompatibilityAbs(getInstrumentation(), getActivity());
 		createProject();
 	}
 
@@ -96,7 +96,7 @@ public class ProgramMenuActivityTest extends ActivityInstrumentationTestCase2<Ma
 
 		// Note that the activity is _indeed_ rotated on your device/emulator!
 		// Robotium can _force_ the activity to be in landscape mode (and so could we, programmatically)
-		solo.setActivityOrientation(Solo.LANDSCAPE);
+		solo.setActivityOrientation(SoloCompatibilityAbs.LANDSCAPE);
 		solo.sleep(200);
 
 		assertEquals(ProgramMenuActivity.class.getSimpleName()

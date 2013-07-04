@@ -44,11 +44,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.jayway.android.robotium.solo.SoloCompatibilityAbs;
 
 public class BroadcastBricksTest extends ActivityInstrumentationTestCase2<ScriptActivity> {
 
-	private Solo solo;
+	private SoloCompatibilityAbs solo;
 	private Project project;
 	private Sprite sprite;
 
@@ -66,7 +66,7 @@ public class BroadcastBricksTest extends ActivityInstrumentationTestCase2<Script
 	@Override
 	public void setUp() throws Exception {
 		createProject();
-		solo = new Solo(getInstrumentation(), getActivity());
+		solo = new SoloCompatibilityAbs(getInstrumentation(), getActivity());
 
 		expected.put(broadcastReceiverSpinnerId, defaultBroadcastMessage);
 		expected.put(broadcastSpinnerId, defaultBroadcastMessage);

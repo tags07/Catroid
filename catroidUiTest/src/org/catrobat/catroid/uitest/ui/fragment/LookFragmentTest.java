@@ -52,7 +52,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.jayway.android.robotium.solo.SoloCompatibilityAbs;
 
 public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {
 	private static final int RESOURCE_IMAGE = org.catrobat.catroid.uitest.R.drawable.catroid_sunglasses;
@@ -93,7 +93,7 @@ public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuA
 
 	private ProjectManager projectManager;
 
-	private Solo solo;
+	private SoloCompatibilityAbs solo;
 
 	public LookFragmentTest() {
 		super(MainMenuActivity.class);
@@ -143,7 +143,7 @@ public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuA
 		projectManager.getCurrentProject().getXmlHeader().virtualScreenWidth = display.getWidth();
 		projectManager.getCurrentProject().getXmlHeader().virtualScreenHeight = display.getHeight();
 
-		solo = new Solo(getInstrumentation(), getActivity());
+		solo = new SoloCompatibilityAbs(getInstrumentation(), getActivity());
 		UiTestUtils.getIntoLooksFromMainMenu(solo, true);
 
 		copy = solo.getString(R.string.copy);
@@ -867,7 +867,7 @@ public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuA
 		assertTrue("No EditText with actual look name", solo.searchEditText(SECOND_TEST_LOOK_NAME));
 
 		UiTestUtils.enterText(solo, 0, newLookName);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 
 		// If an already existing name was entered a counter should be appended
 		String expectedNewLookName = newLookName + "1";
@@ -1178,7 +1178,7 @@ public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuA
 		assertTrue("No EditText with actual look name", solo.searchEditText(lookToRename));
 
 		UiTestUtils.enterText(solo, 0, newLookName);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 	}
 
 	private LookFragment getLookFragment() {

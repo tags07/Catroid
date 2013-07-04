@@ -125,7 +125,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -133,11 +132,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.internal.ActionBarSherlockCompat;
-import com.actionbarsherlock.internal.view.menu.ActionMenuItem;
 import com.actionbarsherlock.internal.widget.IcsSpinner;
 import com.jayway.android.robotium.solo.Solo;
+import com.jayway.android.robotium.solo.SoloCompatibilityAbs;
 
 public class UiTestUtils {
 	private static ProjectManager projectManager = ProjectManager.getInstance();
@@ -894,11 +891,9 @@ public class UiTestUtils {
 		}
 	}
 
-	public static void clickOnActionBar(Solo solo, int imageButtonId) {
+	public static void clickOnActionBar(SoloCompatibilityAbs solo, int imageButtonId) {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-			solo.waitForView(LinearLayout.class);
-			LinearLayout linearLayout = (LinearLayout) solo.getView(imageButtonId);
-			solo.clickOnView(linearLayout);
+			solo.clickOnVisibleActionbarItem(R.id.delete);
 		} else {
 			solo.clickOnActionBarItem(imageButtonId);
 		}
@@ -916,22 +911,24 @@ public class UiTestUtils {
 	 * @param overflowMenuItemId
 	 *            ID of an action item (icon)
 	 */
-	public static void openActionMode(Solo solo, String overflowMenuItemName, int menuItemId, Activity activity) {
-		if (overflowMenuItemName != null && menuItemId != 0) {
-			ArrayList<View> views = solo.getCurrentViews();
-			ArrayList<Integer> ids = new ArrayList<Integer>();
-			for (View view : views) {
-				ids.add(view.getId());
-			}
-			if (!ids.contains(menuItemId)) {
-				solo.clickOnMenuItem(overflowMenuItemName, true);
-			} else {
-				UiTestUtils.clickOnActionBar(solo, menuItemId);
-			}
-		} else { // From overflow menu
-			solo.clickOnMenuItem(overflowMenuItemName, true);
-		}
-		solo.sleep(400);
+	public static void openActionMode(SoloCompatibilityAbs solo, String overflowMenuItemName, int menuItemId,
+			Activity activity) {
+		UiTestUtils.clickOnActionBar(solo, menuItemId);
+		//		if (overflowMenuItemName != null && menuItemId != 0) {
+		//			ArrayList<View> views = solo.getCurrentViews();
+		//			ArrayList<Integer> ids = new ArrayList<Integer>();
+		//			for (View view : views) {
+		//				ids.add(view.getId());
+		//			}
+		//			if (!ids.contains(menuItemId)) {
+		//				solo.clickOnMenuItem(overflowMenuItemName, true);
+		//			} else {
+		//				UiTestUtils.clickOnActionBar(solo, menuItemId);
+		//			}
+		//		} else { // From overflow menu
+		//			solo.clickOnMenuItem(overflowMenuItemName, true);
+		//		}
+		//		solo.sleep(400);
 	}
 
 	public static void acceptAndCloseActionMode(Solo solo) {
@@ -1147,14 +1144,9 @@ public class UiTestUtils {
 		activity.startActivity(intent);
 	}
 
-	public static void clickOnHomeActionBarButton(Solo solo) {
+	public static void clickOnHomeActionBarButton(SoloCompatibilityAbs solo) {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-			Activity activity = solo.getCurrentActivity();
-
-			ActionMenuItem logoNavItem = new ActionMenuItem(activity, 0, android.R.id.home, 0, 0, "");
-			ActionBarSherlockCompat actionBarSherlockCompat = (ActionBarSherlockCompat) Reflection.invokeMethod(
-					SherlockFragmentActivity.class, activity, "getSherlock");
-			actionBarSherlockCompat.onMenuItemSelected(Window.FEATURE_OPTIONS_PANEL, logoNavItem);
+			solo.clickOnActionBarHomeButtonCompat();
 		} else {
 			solo.clickOnActionBarHomeButton();
 		}

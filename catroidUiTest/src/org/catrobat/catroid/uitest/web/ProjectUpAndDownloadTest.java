@@ -54,13 +54,13 @@ import android.test.UiThreadTest;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.jayway.android.robotium.solo.SoloCompatibilityAbs;
 
 public class ProjectUpAndDownloadTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {
 	private static final String TEST_FILE_DOWNLOAD_URL = "http://catroidtest.ist.tugraz.at/catroid/download/";
 	private static final int LONG_TEST_SOUND = org.catrobat.catroid.uitest.R.raw.longsound;
 
-	private Solo solo;
+	private SoloCompatibilityAbs solo;
 	private String testProject = UiTestUtils.PROJECTNAME1;
 	private String newTestProject = UiTestUtils.PROJECTNAME2;
 	private String testDescription = UiTestUtils.PROJECTDESCRIPTION1;
@@ -79,7 +79,7 @@ public class ProjectUpAndDownloadTest extends ActivityInstrumentationTestCase2<M
 	@Override
 	@UiThreadTest
 	public void setUp() throws Exception {
-		solo = new Solo(getInstrumentation(), getActivity());
+		solo = new SoloCompatibilityAbs(getInstrumentation(), getActivity());
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		saveToken = prefs.getString(Constants.TOKEN, Constants.NO_TOKEN);
 		uploadDialogTitle = solo.getString(R.string.upload_project_dialog_title);

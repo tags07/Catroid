@@ -49,10 +49,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.test.ActivityInstrumentationTestCase2;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.jayway.android.robotium.solo.SoloCompatibilityAbs;
 
 public class SwitchToLookCrashTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {
-	private Solo solo;
+	private SoloCompatibilityAbs solo;
 
 	public SwitchToLookCrashTest() {
 		super(MainMenuActivity.class);
@@ -63,7 +63,7 @@ public class SwitchToLookCrashTest extends ActivityInstrumentationTestCase2<Main
 		super.setUp();
 		UiTestUtils.prepareStageForTest();
 		UiTestUtils.clearAllUtilTestProjects();
-		solo = new Solo(getInstrumentation(), getActivity());
+		solo = new SoloCompatibilityAbs(getInstrumentation(), getActivity());
 	}
 
 	@Override

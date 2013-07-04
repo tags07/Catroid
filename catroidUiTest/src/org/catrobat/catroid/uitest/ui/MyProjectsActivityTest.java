@@ -66,7 +66,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.jayway.android.robotium.solo.SoloCompatibilityAbs;
 
 public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {
 	private final String INVALID_PROJECT_MODIFIER = "invalidProject";
@@ -78,7 +78,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 	private final static String MY_PROJECTS_ACTIVITY_TEST_TAG = MyProjectsActivityTest.class.getSimpleName();
 	private final String ZIPFILE_NAME = "testzip";
 
-	private Solo solo;
+	private SoloCompatibilityAbs solo;
 	private File renameDirectory = null;
 	private boolean unzip;
 	private boolean deleteCacheProjects = false;
@@ -99,7 +99,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		UiTestUtils.prepareStageForTest();
 		unzip = false;
 		UiTestUtils.clearAllUtilTestProjects();
-		solo = new Solo(getInstrumentation(), getActivity());
+		solo = new SoloCompatibilityAbs(getInstrumentation(), getActivity());
 	}
 
 	@Override
@@ -186,7 +186,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 
 		// Note that the activity is _indeed_ rotated on your device/emulator!
 		// Robotium can _force_ the activity to be in landscape mode (and so could we, programmatically)
-		solo.setActivityOrientation(Solo.LANDSCAPE);
+		solo.setActivityOrientation(SoloCompatibilityAbs.LANDSCAPE);
 		solo.sleep(200);
 
 		assertEquals(MyProjectsActivity.class.getSimpleName()
@@ -278,7 +278,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		}
 		solo.enterText(0, "testSprite");
 		solo.sleep(200);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(500);
 		solo.goBack();
 
@@ -328,7 +328,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		}
 		solo.enterText(0, "testSprite");
 		solo.sleep(200);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(500);
 		solo.goBack();
 
@@ -962,7 +962,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.clickOnText(solo.getString(R.string.rename));
 		solo.clearEditText(0);
 		solo.enterText(0, UiTestUtils.DEFAULT_TEST_PROJECT_NAME_MIXED_CASE);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(300);
 
 		assertTrue("rename to Mixed Case was not successfull",
@@ -985,7 +985,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.clickOnText(solo.getString(R.string.rename));
 		solo.clearEditText(0);
 		solo.enterText(0, UiTestUtils.DEFAULT_TEST_PROJECT_NAME);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(200);
 		solo.assertCurrentActivity("Should be My Projects Activity", MyProjectsActivity.class);
 		assertEquals("Should not be renamed", UiTestUtils.DEFAULT_TEST_PROJECT_NAME, ProjectManager.getInstance()
@@ -1003,7 +1003,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 				UiTestUtils.longClickOnTextInList(solo, UiTestUtils.DEFAULT_TEST_PROJECT_NAME));
 		solo.clickOnText(solo.getString(R.string.rename));
 		solo.clearEditText(0);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(200);
 		String errorMessageInvalidInput = solo.getString(R.string.notification_invalid_text_entered);
 		assertTrue("No or wrong error message shown", solo.searchText(errorMessageInvalidInput));
@@ -1084,7 +1084,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.clearEditText(0);
 		solo.enterText(0, UiTestUtils.DEFAULT_TEST_PROJECT_NAME_MIXED_CASE);
 		solo.sleep(200);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.waitForDialogToClose(500);
 		String errorMessageProjectExists = solo.getString(R.string.error_project_exists);
 		assertTrue("No or wrong error message shown", solo.searchText(errorMessageProjectExists));
@@ -1262,8 +1262,8 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.clearEditText(0);
 		solo.enterText(0, lorem);
 		solo.sleep(300);
-		solo.sendKey(Solo.ENTER);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.waitForDialogToClose(500);
 
 		// temporarily removed - should be added when displaying projectdescription
@@ -1297,8 +1297,8 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.clearEditText(0);
 		solo.enterText(0, lorem);
 		solo.sleep(300);
-		solo.sendKey(Solo.ENTER);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.waitForDialogToClose(500);
 
 		// temporarily removed - should be added when displaying projectdescription
@@ -1337,7 +1337,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.clearEditText(0);
 		solo.enterText(0, "testSprite");
 		solo.sleep(200);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(200);
 
 		solo.goBack();
@@ -1353,7 +1353,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.clickOnText(solo.getString(R.string.copy));
 		solo.clearEditText(0);
 		solo.enterText(0, UiTestUtils.COPIED_PROJECT_NAME);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.waitForText(UiTestUtils.COPIED_PROJECT_NAME);
 
 		Project oldProject = ProjectManager.getInstance().getCurrentProject();
@@ -1396,7 +1396,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.clickOnText(solo.getString(R.string.copy));
 		solo.clearEditText(0);
 		solo.enterText(0, UiTestUtils.COPIED_PROJECT_NAME);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(200);
 		assertTrue("Did not copy the selected project", solo.searchText(UiTestUtils.COPIED_PROJECT_NAME, true));
 	}
@@ -1424,7 +1424,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.sleep(200);
 		solo.clearEditText(0);
 		solo.enterText(0, UiTestUtils.COPIED_PROJECT_NAME);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(200);
 		assertTrue("Did not copy the selected project", solo.searchText(UiTestUtils.COPIED_PROJECT_NAME, true));
 	}
@@ -1443,7 +1443,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.clickOnText(solo.getString(R.string.copy));
 		solo.clearEditText(0);
 		solo.enterText(0, UiTestUtils.DEFAULT_TEST_PROJECT_NAME_MIXED_CASE);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(200);
 		String errorMessageProjectExists = solo.getString(R.string.error_project_exists);
 		assertTrue("No or wrong error message shown", solo.searchText(errorMessageProjectExists));
@@ -1464,7 +1464,7 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.clickOnText(solo.getString(R.string.copy));
 		solo.clearEditText(0);
 		solo.enterText(0, " ");
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(200);
 		String notificationEmptyString = solo.getString(R.string.notification_invalid_text_entered);
 		assertTrue("No or wrong error message shown", solo.searchText(notificationEmptyString));

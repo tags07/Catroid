@@ -49,11 +49,11 @@ import android.view.Display;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.jayway.android.robotium.solo.SoloCompatibilityAbs;
 
 public class ScriptFragmentTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {
 
-	private Solo solo;
+	private SoloCompatibilityAbs solo;
 	private static final String KEY_SETTINGS_MINDSTORM_BRICKS = "setting_mindstorm_bricks";
 
 	public ScriptFragmentTest() {
@@ -63,7 +63,7 @@ public class ScriptFragmentTest extends ActivityInstrumentationTestCase2<MainMen
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		solo = new Solo(getInstrumentation(), getActivity());
+		solo = new SoloCompatibilityAbs(getInstrumentation(), getActivity());
 	}
 
 	@Override

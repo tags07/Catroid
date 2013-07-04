@@ -77,7 +77,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.jayway.android.robotium.solo.Solo;
+import com.jayway.android.robotium.solo.SoloCompatibilityAbs;
 
 public class ProjectActivityTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {
 	private static final String TEST_SPRITE_NAME = "cat";
@@ -86,7 +86,7 @@ public class ProjectActivityTest extends ActivityInstrumentationTestCase2<MainMe
 	private static final String THIRD_TEST_SPRITE_NAME = "test3";
 	private static final String FOURTH_TEST_SPRITE_NAME = "test4";
 
-	private Solo solo;
+	private SoloCompatibilityAbs solo;
 
 	private String rename;
 	private String renameDialogTitle;
@@ -120,7 +120,7 @@ public class ProjectActivityTest extends ActivityInstrumentationTestCase2<MainMe
 		spriteList.add(new Sprite(THIRD_TEST_SPRITE_NAME));
 		spriteList.add(new Sprite(FOURTH_TEST_SPRITE_NAME));
 
-		solo = new Solo(getInstrumentation(), getActivity());
+		solo = new SoloCompatibilityAbs(getInstrumentation(), getActivity());
 
 		rename = solo.getString(R.string.rename);
 		renameDialogTitle = solo.getString(R.string.rename_sprite_dialog);
@@ -327,7 +327,7 @@ public class ProjectActivityTest extends ActivityInstrumentationTestCase2<MainMe
 		solo.waitForText(yes);
 		solo.clickOnText(yes);
 		solo.sleep(500);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(500);
 		solo.clickOnText(defaultSpriteName + solo.getString(R.string.copy_sprite_name_suffix));
 		solo.sleep(500);
@@ -416,7 +416,7 @@ public class ProjectActivityTest extends ActivityInstrumentationTestCase2<MainMe
 
 		// Note that the activity is _indeed_ rotated on your device/emulator!
 		// Robotium can _force_ the activity to be in landscape mode (and so could we, programmatically)
-		solo.setActivityOrientation(Solo.LANDSCAPE);
+		solo.setActivityOrientation(SoloCompatibilityAbs.LANDSCAPE);
 		solo.sleep(200);
 
 		assertEquals(ProjectActivity.class.getSimpleName() + " not set to be in portrait mode in AndroidManifest.xml!",
@@ -434,7 +434,7 @@ public class ProjectActivityTest extends ActivityInstrumentationTestCase2<MainMe
 
 		solo.clearEditText(0);
 		UiTestUtils.enterText(solo, 0, spriteToRename);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(200);
 
 		int spriteToRenameIndex = 1;
@@ -549,7 +549,7 @@ public class ProjectActivityTest extends ActivityInstrumentationTestCase2<MainMe
 		solo.clickOnButton(buttonCloseText);
 		solo.sleep(200);
 
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		assertTrue("ErrorMessage not visible", solo.searchText(errorMessageText));
 		solo.sleep(200);
 		solo.clickOnButton(buttonCloseText);
@@ -564,7 +564,7 @@ public class ProjectActivityTest extends ActivityInstrumentationTestCase2<MainMe
 
 		// Test to add sprite without name ("") with ENTER key
 		solo.clickOnEditText(0);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(200);
 
 		assertTrue("ErrorMessage not visible", solo.searchText(solo.getString(R.string.spritename_invalid)));
@@ -585,7 +585,7 @@ public class ProjectActivityTest extends ActivityInstrumentationTestCase2<MainMe
 		clickOnContextMenuItem(FIRST_TEST_SPRITE_NAME, rename);
 
 		UiTestUtils.enterText(solo, 0, SECOND_TEST_SPRITE_NAME);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 
 		solo.sleep(200);
 		assertTrue("Error message not visible", solo.searchText(errorSpriteAlreadyExists));
@@ -594,7 +594,7 @@ public class ProjectActivityTest extends ActivityInstrumentationTestCase2<MainMe
 
 		//------------ Enter Key:
 		solo.clickOnEditText(0);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(200);
 		assertTrue("ErrorMessage not visible", solo.searchText(errorSpriteAlreadyExists));
 		solo.clickOnButton(buttonCloseText);
@@ -609,7 +609,7 @@ public class ProjectActivityTest extends ActivityInstrumentationTestCase2<MainMe
 
 		// Test renaming sprite to ("") with ENTER key
 		solo.clickOnEditText(0);
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(200);
 
 		assertTrue("ErrorMessage not visible", solo.searchText(solo.getString(R.string.spritename_invalid)));
@@ -1086,7 +1086,7 @@ public class ProjectActivityTest extends ActivityInstrumentationTestCase2<MainMe
 		assertTrue(">>Object<< string not found", solo.searchText("Object"));
 
 		//set empty string as a object name to reproduce the "invalid name" error
-		solo.sendKey(Solo.ENTER);
+		solo.sendKey(SoloCompatibilityAbs.ENTER);
 		solo.sleep(200);
 		assertFalse(">>sprite<< string found, should be replaced with >>object<<", solo.searchText("sprite"));
 		assertTrue(">>object<< string not found", solo.searchText("object"));

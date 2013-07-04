@@ -200,7 +200,7 @@ public class ScriptFragment extends ScriptActivityFragment implements OnCategory
 			if (adapter.getItem(listView.getTouchedListPosition()) instanceof ScriptBrick) {
 				scriptToEdit = ((ScriptBrick) adapter.getItem(listView.getTouchedListPosition()))
 						.initScript(ProjectManager.INSTANCE.getCurrentSprite());
-				MenuInflater inflater = getActivity().getMenuInflater();
+				MenuInflater inflater = getSherlockActivity().getMenuInflater();
 				inflater.inflate(R.menu.menu_script, menu);
 			}
 		}
