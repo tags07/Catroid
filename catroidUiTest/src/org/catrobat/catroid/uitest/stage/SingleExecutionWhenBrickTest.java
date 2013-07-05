@@ -88,6 +88,7 @@ public class SingleExecutionWhenBrickTest extends ActivityInstrumentationTestCas
 		}
 		solo.sleep(100);
 		assertEquals("Look has wrong AlphaValue.", (float) 1.0, yellowSprite.look.getAlphaValue());
+		//solo.sleep(2000);
 		solo.sleep(5000);
 		assertEquals("Look has wrong AlphaValue.", (float) 0.5, yellowSprite.look.getAlphaValue());
 	}
