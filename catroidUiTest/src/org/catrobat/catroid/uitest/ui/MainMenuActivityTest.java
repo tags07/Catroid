@@ -109,10 +109,7 @@ public class MainMenuActivityTest extends ActivityInstrumentationTestCase2<MainM
 		assertEquals("There should no text be set", "", addNewProjectEditText.getText().toString());
 		solo.clearEditText(0);
 		solo.enterText(0, testProject);
-		String buttonOKText = solo.getString(R.string.ok);
-		solo.goBack();
-		solo.waitForText(buttonOKText);
-		solo.clickOnText(buttonOKText);
+		solo.clickOnText(solo.getString(R.string.ok));
 		solo.waitForActivity(ProjectActivity.class.getSimpleName());
 
 		File file = new File(Constants.DEFAULT_ROOT + "/" + testProject + "/" + Constants.PROJECTCODE_NAME);
@@ -127,12 +124,11 @@ public class MainMenuActivityTest extends ActivityInstrumentationTestCase2<MainM
 		solo.clickOnButton(solo.getString(R.string.main_menu_new));
 		solo.clearEditText(0);
 		solo.enterText(0, "");
-		solo.goBack();
 
-		Button okButton = solo.getButton(getActivity().getString(R.string.ok));
+		Button okButton = solo.getButton(solo.getString(R.string.ok));
 
 		assertFalse("New project ok button is enabled!", okButton.isEnabled());
-		solo.clickOnButton(getActivity().getString(R.string.ok));
+		solo.clickOnButton(solo.getString(R.string.ok));
 
 		File directory = new File(Constants.DEFAULT_ROOT + "/" + testProject);
 		directory.mkdirs();
@@ -150,7 +146,7 @@ public class MainMenuActivityTest extends ActivityInstrumentationTestCase2<MainM
 		solo.sleep(50);
 		solo.clearEditText(0);
 		solo.enterText(0, name);
-		solo.clickOnButton(getActivity().getString(R.string.ok));
+		solo.clickOnButton(solo.getString(R.string.ok));
 		assertTrue("No error message was displayed upon creating a project with the same name twice.",
 				solo.searchText(solo.getString(R.string.error_project_exists)));
 		solo.clickOnButton(solo.getString(R.string.close));
@@ -166,10 +162,7 @@ public class MainMenuActivityTest extends ActivityInstrumentationTestCase2<MainM
 		solo.clickOnButton(solo.getString(R.string.main_menu_new));
 		solo.clearEditText(0);
 		solo.enterText(0, projectNameWithBlacklistedCharacters);
-		solo.goBack();
-		String buttonOKText = solo.getString(R.string.ok);
-		solo.waitForText(buttonOKText);
-		solo.clickOnText(buttonOKText);
+		solo.clickOnText(solo.getString(R.string.ok));
 		solo.waitForActivity(ProjectActivity.class.getSimpleName());
 
 		File file = new File(Utils.buildPath(directoryPath, Constants.PROJECTCODE_NAME));
@@ -184,10 +177,7 @@ public class MainMenuActivityTest extends ActivityInstrumentationTestCase2<MainM
 		solo.clickOnButton(solo.getString(R.string.main_menu_new));
 		solo.clearEditText(0);
 		solo.enterText(0, projectNameWithWhitelistedCharacters);
-		solo.goBack();
-		String buttonOKText = solo.getString(R.string.ok);
-		solo.waitForText(buttonOKText);
-		solo.clickOnText(buttonOKText);
+		solo.clickOnText(solo.getString(R.string.ok));
 		solo.waitForActivity(ProjectActivity.class.getSimpleName());
 
 		File file = new File(Utils.buildPath(directoryPath, Constants.PROJECTCODE_NAME));

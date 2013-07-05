@@ -209,7 +209,6 @@ public class UploadDialogTest extends ActivityInstrumentationTestCase2<MainMenuA
 
 		solo.clickOnButton(solo.getString(R.string.main_menu_new));
 		solo.enterText(0, testProject);
-		solo.goBack();
 		solo.clickOnButton(solo.getString(R.string.ok));
 		solo.sleep(2000);
 

@@ -157,8 +157,6 @@ public class BroadcastBricksTest extends ActivityInstrumentationTestCase2<Script
 		solo.clickInList(0);
 		solo.waitForView(EditText.class);
 		solo.enterText(0, text);
-		solo.goBack();
-		solo.sleep(200);
 		solo.clickOnText(solo.getString(R.string.ok));
 		solo.waitForView(solo.getView(spinnerId));
 		gainFocus();

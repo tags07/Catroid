@@ -95,9 +95,8 @@ public class PointToBrickTest extends ActivityInstrumentationTestCase2<ScriptAct
 		solo.clickInList(0);
 		solo.waitForView(EditText.class);
 		solo.enterText(0, newSpriteName);
-		solo.goBack();
 		solo.clickOnButton(solo.getString(R.string.ok));
-		solo.sleep(300);
+		solo.sleep(200);
 
 		assertEquals("Wrong number of sprites", oldSpriteListSize + 1, project.getSpriteList().size());
 		assertEquals("Wrong selection", newSpriteName, ((Spinner) solo.getView(R.id.brick_point_to_spinner))
