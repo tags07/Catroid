@@ -1475,7 +1475,6 @@ public class MyProjectsActivityTest extends ActivityInstrumentationTestCase2<Mai
 		solo.clickOnText(solo.getString(R.string.copy));
 		solo.clearEditText(0);
 		solo.enterText(0, copyProjectString);
-		solo.goBack();
 		solo.clickOnText(solo.getString(R.string.ok));
 		solo.sleep(200);
 		String errorMessageProjectExists = solo.getString(R.string.error_project_exists);
