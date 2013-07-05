@@ -52,6 +52,10 @@ public class Project implements Serializable {
 	private UserVariablesContainer userVariables = null;
 
 	public Project(Context context, String name) {
+		if (name == null || name == "") {
+			name = context.getString(R.string.app_name);
+			//TODO throw new IllegalArgumentException("Project name must not be empty!");
+		}
 		xmlHeader.setProgramName(name);
 		xmlHeader.setDescription("");
 		xmlHeader.setCatrobatLanguageVersion(Constants.SUPPORTED_CATROBAT_LANGUAGE_VERSION);

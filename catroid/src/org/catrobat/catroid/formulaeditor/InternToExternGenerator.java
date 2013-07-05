@@ -29,7 +29,6 @@ import java.util.List;
 import org.catrobat.catroid.R;
 
 import android.content.Context;
-import android.util.Log;
 
 public class InternToExternGenerator {
 
@@ -78,8 +77,10 @@ public class InternToExternGenerator {
 				.put(Sensors.Y_INCLINATION.name(), R.string.formula_editor_sensor_y_inclination);
 		internExternLanguageConverterMap.put(Sensors.OBJECT_X.name(), R.string.formula_editor_object_x);
 		internExternLanguageConverterMap.put(Sensors.OBJECT_Y.name(), R.string.formula_editor_object_y);
-		internExternLanguageConverterMap.put(Sensors.OBJECT_GHOSTEFFECT.name(), R.string.formula_editor_object_ghosteffect);
-		internExternLanguageConverterMap.put(Sensors.OBJECT_BRIGHTNESS.name(), R.string.formula_editor_object_brightness);
+		internExternLanguageConverterMap.put(Sensors.OBJECT_GHOSTEFFECT.name(),
+				R.string.formula_editor_object_ghosteffect);
+		internExternLanguageConverterMap.put(Sensors.OBJECT_BRIGHTNESS.name(),
+				R.string.formula_editor_object_brightness);
 		internExternLanguageConverterMap.put(Sensors.OBJECT_SIZE.name(), R.string.formula_editor_object_size);
 		internExternLanguageConverterMap.put(Sensors.OBJECT_ROTATION.name(), R.string.formula_editor_object_rotation);
 		internExternLanguageConverterMap.put(Sensors.OBJECT_LAYER.name(), R.string.formula_editor_object_layer);
@@ -105,7 +106,7 @@ public class InternToExternGenerator {
 	}
 
 	public void generateExternStringAndMapping(List<InternToken> internTokenFormula) {
-		Log.i("info", "generateExternStringAndMapping:enter");
+		//Log.i("info", "generateExternStringAndMapping:enter");
 
 		List<InternToken> internTokenList = new LinkedList<InternToken>();
 

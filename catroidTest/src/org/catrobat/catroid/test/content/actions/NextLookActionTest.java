@@ -44,7 +44,7 @@ public class NextLookActionTest extends InstrumentationTestCase {
 
 	private static final int IMAGE_FILE_ID = R.raw.icon;
 	private File testImage;
-	private String projectName;
+	private String projectName = "testProject1";
 
 	@Override
 	protected void setUp() throws Exception {
