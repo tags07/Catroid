@@ -655,15 +655,15 @@ public class UiTestUtils {
 			}
 		}
 		BufferedInputStream in = new BufferedInputStream(context.getResources().openRawResource(fileID),
-				Constants.BUFFER_8K);
+				Constants.BUFFER_8_KILOBYTE);
 
 		try {
 			File file = new File(filePath + name);
 			file.getParentFile().mkdirs();
 			file.createNewFile();
 
-			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file), Constants.BUFFER_8K);
-			byte[] buffer = new byte[Constants.BUFFER_8K];
+			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file), Constants.BUFFER_8_KILOBYTE);
+			byte[] buffer = new byte[Constants.BUFFER_8_KILOBYTE];
 			int length = 0;
 			while ((length = in.read(buffer)) > 0) {
 				out.write(buffer, 0, length);
@@ -963,9 +963,9 @@ public class UiTestUtils {
 		}
 
 		InputStream in = context.getResources().openRawResource(fileID);
-		OutputStream out = new BufferedOutputStream(new FileOutputStream(testImage), Constants.BUFFER_8K);
+		OutputStream out = new BufferedOutputStream(new FileOutputStream(testImage), Constants.BUFFER_8_KILOBYTE);
 
-		byte[] buffer = new byte[Constants.BUFFER_8K];
+		byte[] buffer = new byte[Constants.BUFFER_8_KILOBYTE];
 		int length = 0;
 
 		while ((length = in.read(buffer)) > 0) {

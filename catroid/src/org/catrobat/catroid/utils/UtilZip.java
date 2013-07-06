@@ -77,7 +77,7 @@ public class UtilZip {
 	}
 
 	private static void writeFileToZip(File file, String zipEntryPath) throws IOException {
-		byte[] readBuffer = new byte[Constants.BUFFER_8K];
+		byte[] readBuffer = new byte[Constants.BUFFER_8_KILOBYTE];
 		int bytesIn = 0;
 
 		FileInputStream fileInputStream = new FileInputStream(file);
@@ -96,7 +96,7 @@ public class UtilZip {
 			ZipEntry zipEntry = null;
 
 			BufferedOutputStream destinationOutputStream = null;
-			byte data[] = new byte[Constants.BUFFER_8K];
+			byte data[] = new byte[Constants.BUFFER_8_KILOBYTE];
 			ZipFile zipfile = new ZipFile(zipFile);
 			Enumeration<? extends ZipEntry> e = zipfile.entries();
 			while (e.hasMoreElements()) {
@@ -115,8 +115,8 @@ public class UtilZip {
 				FileOutputStream fileOutputStream = new FileOutputStream(file);
 
 				int count;
-				destinationOutputStream = new BufferedOutputStream(fileOutputStream, Constants.BUFFER_8K);
-				while ((count = zipInputStream.read(data, 0, Constants.BUFFER_8K)) != -1) {
+				destinationOutputStream = new BufferedOutputStream(fileOutputStream, Constants.BUFFER_8_KILOBYTE);
+				while ((count = zipInputStream.read(data, 0, Constants.BUFFER_8_KILOBYTE)) != -1) {
 					destinationOutputStream.write(data, 0, count);
 				}
 				destinationOutputStream.flush();

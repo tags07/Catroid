@@ -278,7 +278,7 @@ public class StorageHandler {
 			}
 
 			BufferedWriter writer = new BufferedWriter(new FileWriter(Utils.buildPath(projectDirectoryName,
-					Constants.PROJECTCODE_NAME)), Constants.BUFFER_8K);
+					Constants.PROJECTCODE_NAME)), Constants.BUFFER_8_KILOBYTE);
 			writer.write(XML_HEADER.concat(projectFile));
 			writer.flush();
 			writer.close();

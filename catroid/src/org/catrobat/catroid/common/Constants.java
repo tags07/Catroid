@@ -59,7 +59,8 @@ public final class Constants {
 	public static final String POCKET_PAINT_INTENT_ACTIVITY_NAME = "org.catrobat.paintroid.pocketpaint.MainActivity";
 
 	//Various:
-	public static final int BUFFER_8K = 8 * 1024;
+	public static final int BUFFER_8_KILOBYTE = 8 * 1024;
+    public static final int BUFFER_128_KILOBYTE = 128 * 1024;
 	public static final String POCKET_PAINT_DOWNLOAD_LINK = "market://details?id="
 			+ POCKET_PAINT_PACKAGE_NAME;
 	public static final String PREF_PROJECTNAME_KEY = "projectName";

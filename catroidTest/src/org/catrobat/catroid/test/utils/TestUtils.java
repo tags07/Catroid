@@ -109,9 +109,9 @@ public class TestUtils {
 		}
 
 		InputStream in = context.getResources().openRawResource(fileID);
-		OutputStream out = new BufferedOutputStream(new FileOutputStream(testImage), Constants.BUFFER_8K);
+		OutputStream out = new BufferedOutputStream(new FileOutputStream(testImage), Constants.BUFFER_8_KILOBYTE);
 
-		byte[] buffer = new byte[Constants.BUFFER_8K];
+		byte[] buffer = new byte[Constants.BUFFER_8_KILOBYTE];
 		int length = 0;
 
 		while ((length = in.read(buffer)) > 0) {
@@ -133,7 +133,7 @@ public class TestUtils {
 		StringBuilder contents = new StringBuilder();
 
 		try {
-			BufferedReader input = new BufferedReader(new FileReader(projectFile), Constants.BUFFER_8K);
+			BufferedReader input = new BufferedReader(new FileReader(projectFile), Constants.BUFFER_8_KILOBYTE);
 			try {
 				String line = null;
 				while ((line = input.readLine()) != null) {

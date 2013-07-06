@@ -56,7 +56,7 @@ public class ImageEditingTest extends TestCase {
 
 		try {
 			fileOutputStream = new FileOutputStream(sdImageMainDirectory.toString() + "/tmp" + ".jpg");
-			BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream, Constants.BUFFER_8K);
+			BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream, Constants.BUFFER_8_KILOBYTE);
 			bitmap.compress(CompressFormat.PNG, 0, bos);
 			bos.flush();
 			bos.close();
@@ -88,7 +88,7 @@ public class ImageEditingTest extends TestCase {
 
 		try {
 			fileOutputStream = new FileOutputStream(sdImageMainDirectory.toString() + "/" + "tmp" + ".jpg");
-			BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream, Constants.BUFFER_8K);
+			BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream, Constants.BUFFER_8_KILOBYTE);
 			bitmap.compress(CompressFormat.PNG, 0, bos);
 			bos.flush();
 			bos.close();
@@ -119,7 +119,7 @@ public class ImageEditingTest extends TestCase {
 
 		try {
 			fileOutputStream = new FileOutputStream(sdImageMainDirectory.toString() + "/" + "tmp" + ".jpg");
-			BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream, Constants.BUFFER_8K);
+			BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream, Constants.BUFFER_8_KILOBYTE);
 			bitmap.compress(CompressFormat.PNG, 0, bos);
 			bos.flush();
 			bos.close();
@@ -150,7 +150,7 @@ public class ImageEditingTest extends TestCase {
 
 		try {
 			fileOutputStream = new FileOutputStream(sdImageMainDirectory.toString() + "/" + "tmp" + ".jpg");
-			BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream, Constants.BUFFER_8K);
+			BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream, Constants.BUFFER_8_KILOBYTE);
 			bitmap.compress(CompressFormat.PNG, 0, bos);
 			bos.flush();
 			bos.close();

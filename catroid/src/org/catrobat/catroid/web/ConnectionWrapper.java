@@ -22,8 +22,7 @@
  */
 package org.catrobat.catroid.web;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
 import org.catrobat.catroid.common.Constants;
@@ -56,25 +55,34 @@ public class ConnectionWrapper {
 		String fileName = postValues.get(TAG_PROJECT_TITLE);
 
 		if (filePath != null) {
-			HttpRequest uploadRequest = HttpRequest.post(urlString);
 
-			for (String key : postValues.keySet()) {
-				uploadRequest.part(key, postValues.get(key));
-			}
-			File file = new File(filePath);
-			uploadRequest.part(fileTag, fileName, file);
+            File file = new File(filePath);
+            FileInputStream fileStream = new FileInputStream(file);
+            BufferedInputStream bufferedStream = new BufferedInputStream(fileStream, Constants.BUFFER_128_KILOBYTE);
 
-			int responseCode = uploadRequest.code();
-			if (!(responseCode == 200 || responseCode == 201)) {
-				throw new WebconnectionException(responseCode, "Error response code should be 200 or 201!");
-			}
-			if (!uploadRequest.ok()) {
-				Log.v(TAG, "Upload not succesful");
-			}
+            byte[] buffer = new byte[Constants.BUFFER_128_KILOBYTE];
+            int bytesRead = 0;
+            while ((bytesRead = bufferedStream.read()) != -1){
+                HttpRequest uploadRequest = HttpRequest.post(urlString);
 
-			answer = uploadRequest.body();
-			Log.v(TAG, "Upload response is: " + answer);
+                for (String key : postValues.keySet()) {
+                    uploadRequest.part(key, postValues.get(key));
+                }
+
+                uploadRequest.part(fileTag, fileName, file);
+
+                int responseCode = uploadRequest.code();
+                if (!(responseCode == 200 || responseCode == 201)) {
+                    throw new WebconnectionException(responseCode, "Error response code should be 200 or 201!");
+                }
+                if (!uploadRequest.ok()) {
+                    Log.v(TAG, "Upload not succesful");
+                }
+
+                answer = uploadRequest.body();
+            }
 		}
+        Log.v(TAG, "Upload response is: " + answer);
 		return answer;
 	}
 

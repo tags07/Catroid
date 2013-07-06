@@ -302,8 +302,8 @@ public class StandardProjectHandler {
 			copiedFile.createNewFile();
 		}
 		InputStream in = context.getResources().openRawResource(fileId);
-		OutputStream out = new BufferedOutputStream(new FileOutputStream(copiedFile), Constants.BUFFER_8K);
-		byte[] buffer = new byte[Constants.BUFFER_8K];
+		OutputStream out = new BufferedOutputStream(new FileOutputStream(copiedFile), Constants.BUFFER_8_KILOBYTE);
+		byte[] buffer = new byte[Constants.BUFFER_8_KILOBYTE];
 		int length = 0;
 		while ((length = in.read(buffer)) > 0) {
 			out.write(buffer, 0, length);

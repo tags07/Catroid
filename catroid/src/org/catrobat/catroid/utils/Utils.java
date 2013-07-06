@@ -179,7 +179,7 @@ public class Utils {
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(file);
-			byte[] buffer = new byte[Constants.BUFFER_8K];
+			byte[] buffer = new byte[Constants.BUFFER_8_KILOBYTE];
 
 			int length = 0;
 
