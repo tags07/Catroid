@@ -148,9 +148,8 @@ public class NewVariableDialog extends SherlockDialogFragment {
 				Toast.makeText(getActivity(), R.string.formula_editor_existing_variable, Toast.LENGTH_LONG).show();
 
 			} else {
-				// TODO
 				newUserVariable = ProjectManager.getInstance().getCurrentProject().getUserVariables()
-						.addProjectUserVariable(variableName);
+						.addSharedUserVariable(variableName);
 			}
 		}
 		variableDialogListenerListFinishNewVariableDialog(newUserVariable);

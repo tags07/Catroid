@@ -44,6 +44,8 @@ public class UserVariablesContainer implements Serializable {
 	private List<UserVariable> projectVariables;
 	@XStreamAlias("objectVariableList")
 	private Map<Sprite, List<UserVariable>> spriteVariables;
+	@XStreamAlias("sharedVariableList")
+	private List<UserVariableShared> sharedVariables;
 
 	public UserVariablesContainer() {
 		projectVariables = new ArrayList<UserVariable>();
@@ -78,6 +80,12 @@ public class UserVariablesContainer implements Serializable {
 	public UserVariable addProjectUserVariable(String userVariableName) {
 		UserVariable userVariableToAdd = new UserVariable(userVariableName);
 		projectVariables.add(userVariableToAdd);
+		return userVariableToAdd;
+	}
+
+	public UserVariable addSharedUserVariable(String userVariableName) {
+		UserVariableShared userVariableToAdd = new UserVariableShared(userVariableName);
+		sharedVariables.add(userVariableToAdd);
 		return userVariableToAdd;
 	}
 
