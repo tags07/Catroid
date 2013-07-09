@@ -45,15 +45,17 @@ public class UserVariablesContainer implements Serializable {
 	@XStreamAlias("objectVariableList")
 	private Map<Sprite, List<UserVariable>> spriteVariables;
 	@XStreamAlias("sharedVariableList")
-	private List<UserVariableShared> sharedVariables;
+	private List<UserVariable> sharedVariables;
 
 	public UserVariablesContainer() {
 		projectVariables = new ArrayList<UserVariable>();
 		spriteVariables = new HashMap<Sprite, List<UserVariable>>();
+		sharedVariables = new ArrayList<UserVariable>();
 	}
 
 	public UserVariableAdapter createUserVariableAdapter(Context context, Sprite sprite) {
-		return new UserVariableAdapter(context, getOrCreateVariableListForSprite(sprite), projectVariables);
+		return new UserVariableAdapter(context, getOrCreateVariableListForSprite(sprite), projectVariables,
+				sharedVariables);
 	}
 
 	public UserVariable getUserVariable(String userVariableName, Sprite sprite) {
@@ -62,6 +64,10 @@ public class UserVariablesContainer implements Serializable {
 		if (var == null) {
 			var = findUserVariable(userVariableName, projectVariables);
 		}
+		if (var == null) {
+			var = findUserVariable(userVariableName, sharedVariables);
+		}
+
 		return var;
 	}
 
@@ -102,6 +108,11 @@ public class UserVariablesContainer implements Serializable {
 		if (variableToDelete != null) {
 			projectVariables.remove(variableToDelete);
 		}
+
+		variableToDelete = findUserVariable(userVariableName, sharedVariables);
+		if (variableToDelete != null) {
+			sharedVariables.remove(variableToDelete);
+		}
 	}
 
 	public List<UserVariable> getOrCreateVariableListForSprite(Sprite sprite) {
@@ -140,6 +151,7 @@ public class UserVariablesContainer implements Serializable {
 	public void resetAllUserVariables() {
 
 		resetUserVariables(projectVariables);
+		resetUserVariables(sharedVariables);
 
 		Iterator<Sprite> spriteIterator = spriteVariables.keySet().iterator();
 		while (spriteIterator.hasNext()) {

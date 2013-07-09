@@ -44,6 +44,7 @@ public class UserVariableAdapter extends BaseAdapter implements ScriptActivityAd
 	private Context context;
 	private List<UserVariable> spriteVariables;
 	private List<UserVariable> projectVariables;
+	private List<UserVariable> sharedVariables;
 	private int selectMode;
 	private SortedSet<Integer> checkedVariables = new TreeSet<Integer>();
 	private OnCheckedChangeListener onCheckedChangeListener = null;
@@ -59,9 +60,11 @@ public class UserVariableAdapter extends BaseAdapter implements ScriptActivityAd
 		private TextView text2;
 	}
 
-	public UserVariableAdapter(Context context, List<UserVariable> spriteVariables, List<UserVariable> projectVariables) {
+	public UserVariableAdapter(Context context, List<UserVariable> spriteVariables,
+			List<UserVariable> projectVariables, List<UserVariable> sharedVariables) {
 		this.spriteVariables = spriteVariables;
 		this.projectVariables = projectVariables;
+		this.sharedVariables = sharedVariables;
 		this.context = context;
 		this.selectMode = ListView.CHOICE_MODE_NONE;
 		this.itemLayout = R.layout.fragment_formula_editor_variablelist_item;
@@ -81,15 +84,17 @@ public class UserVariableAdapter extends BaseAdapter implements ScriptActivityAd
 
 	@Override
 	public int getCount() {
-		return spriteVariables.size() + projectVariables.size();
+		return spriteVariables.size() + projectVariables.size() + sharedVariables.size();
 	}
 
 	@Override
 	public UserVariable getItem(int position) {
 		if (position < spriteVariables.size()) {
 			return spriteVariables.get(position);
-		} else {
+		} else if (position < spriteVariables.size() + projectVariables.size()) {
 			return projectVariables.get(position - spriteVariables.size());
+		} else {
+			return sharedVariables.get(position - spriteVariables.size() - projectVariables.size());
 		}
 	}
 

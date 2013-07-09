@@ -22,8 +22,10 @@
  */
 package org.catrobat.catroid.formulaeditor;
 
+import android.util.Log;
+
 public class UserVariableShared extends UserVariable {
-	//	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	public UserVariableShared(String name) {
 		super(name);
@@ -39,6 +41,7 @@ public class UserVariableShared extends UserVariable {
 		super.setValue(value);
 		// TODO
 		// send Value over Bluetooth to other device
+		Log.d("SHARED", "Value changed!");
 	}
 
 	@Override
