@@ -48,6 +48,11 @@
         <RadioButton
             android:id="@+id/dialog_formula_editor_variable_name_local_variable_radio_button"
             android:text="@string/formula_editor_variable_dialog_for_this_sprite_only" />
+
+        <RadioButton
+            android:id="@+id/dialog_formula_editor_variable_name_global_broadcast_variable_radio_button"
+            android:text="@string/formula_editor_variable_dialog_for_all_sprites_broadcast" />
+
     </RadioGroup>
 
 </LinearLayout>

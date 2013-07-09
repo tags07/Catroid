@@ -123,6 +123,8 @@ public class NewVariableDialog extends SherlockDialogFragment {
 				.findViewById(R.id.dialog_formula_editor_variable_name_local_variable_radio_button);
 		RadioButton globalVariable = (RadioButton) dialogView
 				.findViewById(R.id.dialog_formula_editor_variable_name_global_variable_radio_button);
+		RadioButton globalBroadcastVariable = (RadioButton) dialogView
+				.findViewById(R.id.dialog_formula_editor_variable_name_global_broadcast_variable_radio_button);
 
 		String variableName = variableNameEditText.getText().toString();
 		UserVariable newUserVariable = null;
@@ -139,6 +141,17 @@ public class NewVariableDialog extends SherlockDialogFragment {
 		} else if (localVariable.isChecked()) {
 			newUserVariable = ProjectManager.getInstance().getCurrentProject().getUserVariables()
 					.addSpriteUserVariable(variableName);
+		} else if (globalBroadcastVariable.isChecked()) {
+			if (ProjectManager.getInstance().getCurrentProject().getUserVariables()
+					.getUserVariable(variableName, ProjectManager.getInstance().getCurrentSprite()) != null) {
+
+				Toast.makeText(getActivity(), R.string.formula_editor_existing_variable, Toast.LENGTH_LONG).show();
+
+			} else {
+				// TODO
+				newUserVariable = ProjectManager.getInstance().getCurrentProject().getUserVariables()
+						.addProjectUserVariable(variableName);
+			}
 		}
 		variableDialogListenerListFinishNewVariableDialog(newUserVariable);
 	}
