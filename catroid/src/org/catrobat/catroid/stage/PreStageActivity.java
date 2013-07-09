@@ -77,7 +77,7 @@ public class PreStageActivity extends Activity {
 			startActivityForResult(checkIntent, REQUEST_TEXT_TO_SPEECH);
 		}
 		if ((required_resources & Brick.BLUETOOTH_MULTIPLAYER) > 0
-				&& (required_resources & Brick.BLUETOOTH_LEGO_NXT) > 0) {
+				&& ((required_resources & Brick.BLUETOOTH_LEGO_NXT) > 0)) {
 			Toast.makeText(PreStageActivity.this, R.string.notification_bluetooth_error_nxt_and_shared_variables_both,
 					Toast.LENGTH_LONG).show();
 			finish();
@@ -85,7 +85,19 @@ public class PreStageActivity extends Activity {
 		} else {
 
 			if ((required_resources & Brick.BLUETOOTH_MULTIPLAYER) > 0) {
-				// TODO: handle bluetooth connection  
+				// TODO: handle bluetooth connection 
+				BluetoothManager bluetoothManager = new BluetoothManager(this);
+				int bluetoothState = bluetoothManager.activateBluetooth();
+
+				if (bluetoothState == BluetoothManager.BLUETOOTH_NOT_SUPPORTED) {
+
+					Toast.makeText(PreStageActivity.this, R.string.notification_blueth_err, Toast.LENGTH_LONG).show();
+					resourceFailed();
+				} else if (bluetoothState == BluetoothManager.BLUETOOTH_ALREADY_ON) {
+					//start to create bluetoothconnection 
+					startBluetoothCommunication(true);
+				}
+
 			} else if ((required_resources & Brick.BLUETOOTH_LEGO_NXT) > 0) {
 				BluetoothManager bluetoothManager = new BluetoothManager(this);
 
