@@ -153,4 +153,8 @@ public class UserVariablesContainer implements Serializable {
 			userVariable.setValue(0);
 		}
 	}
+
+	public List<UserVariableShared> getSharedVariables() {
+		return sharedVariables;
+	}
 }

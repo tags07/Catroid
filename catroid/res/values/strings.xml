@@ -441,6 +441,7 @@
     <string name="no_paired_nxt">No paired NXT found</string>
     <string name="none_found">No unpaired devices found</string>
     <string name="none_paired">No paired devices found</string>
+    <string name="notification_bluetooth_error_nxt_and_shared_variables_both">NXT and Shared Variables cannot be used simultaneously. </string>
     <!--  -->
 
 
