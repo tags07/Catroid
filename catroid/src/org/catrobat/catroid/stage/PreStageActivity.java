@@ -219,10 +219,17 @@ public class PreStageActivity extends Activity {
 			case REQUEST_CONNECT_DEVICE:
 				switch (resultCode) {
 					case Activity.RESULT_OK:
-						legoNXT = new LegoNXT(this, recieveHandler);
-						String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-						autoConnect = data.getExtras().getBoolean(DeviceListActivity.AUTO_CONNECT);
-						legoNXT.startBTCommunicator(address);
+						switch (getRequiredRessources()) {
+							case Brick.BLUETOOTH_LEGO_NXT:
+								legoNXT = new LegoNXT(this, recieveHandler);
+								String address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+								autoConnect = data.getExtras().getBoolean(DeviceListActivity.AUTO_CONNECT);
+								legoNXT.startBTCommunicator(address);
+								break;
+							case Brick.BLUETOOTH_MULTIPLAYER:
+								// TODO: multiplayer, Bluetoothsockets
+								break;
+						}
 						break;
 
 					case Activity.RESULT_CANCELED:
