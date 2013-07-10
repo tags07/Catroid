@@ -77,7 +77,7 @@ public class StageListener implements ApplicationListener {
 	private boolean firstStart = true;
 	private boolean reloadProject = false;
 
-	private boolean makeAutomaticScreenshot = true;
+	private boolean makeAutomaticScreenshot = false;
 	private boolean makeScreenshot = false;
 	private String pathForScreenshot;
 	private int screenshotWidth;
@@ -249,8 +249,8 @@ public class StageListener implements ApplicationListener {
 		finished = true;
 		SoundManager.getInstance().clear();
 		if (thumbnail != null) {
-			prepareAutomaticScreenshotAndNoMeadiaFile();
-			saveScreenshot(thumbnail, SCREENSHOT_AUTOMATIC_FILE_NAME);
+			//			prepareAutomaticScreenshotAndNoMeadiaFile();
+			//			saveScreenshot(thumbnail, SCREENSHOT_AUTOMATIC_FILE_NAME);
 		}
 
 	}
