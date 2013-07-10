@@ -360,4 +360,11 @@ public class ExtendedActions extends Actions {
 		action.setSprite(sprite);
 		return action;
 	}
+
+	public static AskAction ask(Sprite sprite, String question) {
+		AskAction action = action(AskAction.class);
+		action.setQuestion(question);
+		action.setSprite(sprite);
+		return action;
+	}
 }

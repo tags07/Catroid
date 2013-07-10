@@ -22,14 +22,21 @@
  */
 package org.catrobat.catroid.stage;
 
+import java.util.ArrayList;
+
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.ScreenValues;
+import org.catrobat.catroid.content.actions.AskAction;
 import org.catrobat.catroid.formulaeditor.SensorHandler;
 import org.catrobat.catroid.ui.dialogs.StageDialog;
+import org.catrobat.catroid.utils.UtilSpeechRecognition;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -40,8 +47,10 @@ public class StageActivity extends AndroidApplication {
 	public static StageListener stageListener;
 	private boolean resizePossible;
 	private StageDialog stageDialog;
+	private AskAction asker;
 
 	public static final int STAGE_ACTIVITY_FINISH = 7777;
+	private static final int SPEECH_REQUEST_CODE = 3120;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,7 @@ public class StageActivity extends AndroidApplication {
 		stageListener = new StageListener();
 		stageDialog = new StageDialog(this, stageListener, R.style.stage_dialog);
 		calculateScreenSizes();
+		UtilSpeechRecognition.getInstance().setStage(this);
 		initialize(stageListener, true);
 	}
 
@@ -108,4 +118,36 @@ public class StageActivity extends AndroidApplication {
 		}
 	}
 
+	public void askForSpeechInput(AskAction asker) {
+		this.asker = asker;
+
+		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+		intent.putExtra(RecognizerIntent.EXTRA_PROMPT, asker.getQuestion());
+		startActivityForResult(intent, SPEECH_REQUEST_CODE);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.i("bt", "requestcode " + requestCode + " result code" + resultCode);
+
+		switch (requestCode) {
+			case SPEECH_REQUEST_CODE:
+				switch (resultCode) {
+					case RESULT_OK:
+						ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+						asker.setAnswer(matches.get(0));
+						break;
+					case RESULT_CANCELED:
+						break;
+					case RESULT_FIRST_USER:
+						break;
+					default:
+						Log.w(TAG, "unhandeld Recognizer resultCode " + resultCode);
+				}
+				break;
+			default:
+				Log.w(TAG, "unhandeld ActivityResult.");
+		}
+	}
 }

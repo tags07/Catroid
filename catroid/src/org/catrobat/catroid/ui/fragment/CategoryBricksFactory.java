@@ -30,6 +30,7 @@ import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.common.MessageContainer;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.bricks.AskBrick;
 import org.catrobat.catroid.content.bricks.Brick;
 import org.catrobat.catroid.content.bricks.BroadcastBrick;
 import org.catrobat.catroid.content.bricks.BroadcastReceiverBrick;
@@ -117,6 +118,7 @@ public class CategoryBricksFactory {
 		controlBrickList.add(new BroadcastWaitBrick(sprite, broadcastMessage));
 
 		controlBrickList.add(new NoteBrick(sprite, context.getString(R.string.brick_note_default_value)));
+		controlBrickList.add(new AskBrick(sprite, context.getString(R.string.brick_ask_default_value)));
 		controlBrickList.add(new ForeverBrick(sprite));
 		controlBrickList.add(new IfLogicBeginBrick(sprite, 0));
 		controlBrickList.add(new RepeatBrick(sprite, BrickValues.REPEAT));
