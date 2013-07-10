@@ -441,6 +441,8 @@
     <string name="no_paired_nxt">No paired NXT found</string>
     <string name="none_found">No unpaired devices found</string>
     <string name="none_paired">No paired devices found</string>
+    <string name="select_device_multiplayer">Select the device you want to connect with</string>
+    <string name="connecting_please_wait_mulitplayer">Connecting to other Player.\nPlease wait…</string>
     <string name="notification_bluetooth_error_nxt_and_shared_variables_both">NXT and Shared Variables cannot be used simultaneously. </string>
     <!--  -->
 
