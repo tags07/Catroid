@@ -189,7 +189,7 @@ public class PreStageActivity extends Activity {
 				.getSpriteList();
 
 		int ressources = Brick.NO_RESOURCES;
-		if (ProjectManager.getInstance().getCurrentProject().getUserVariables().getSharedVariables().size() > 0) {
+		if (ProjectManager.getInstance().getCurrentProject().getUserVariables().getSharedVariablesListSize() > 0) {
 			ressources |= Brick.BLUETOOTH_MULTIPLAYER;
 		}
 
@@ -230,7 +230,7 @@ public class PreStageActivity extends Activity {
 								break;
 							case Brick.BLUETOOTH_MULTIPLAYER:
 								// TODO: multiplayer, Bluetoothsockets
-								multiplayer = new Multiplayer();
+								multiplayer = new Multiplayer(this, recieveHandler);
 								address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
 								multiplayer.createBtManager(address);
 								break;

@@ -52,4 +52,8 @@ public class UserVariableShared extends UserVariable {
 		return super.getName();
 	}
 
+	public void setValueWithoutSend(double value) {
+		super.setValue(value);
+	}
+
 }

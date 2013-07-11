@@ -166,7 +166,11 @@ public class UserVariablesContainer implements Serializable {
 		}
 	}
 
-	public List<UserVariable> getSharedVariables() {
-		return sharedVariables;
+	public int getSharedVariablesListSize() {
+		return sharedVariables.size();
+	}
+
+	public UserVariableShared getSharedVariabel(String userVariableName) {
+		return (UserVariableShared) findUserVariable(userVariableName, sharedVariables);
 	}
 }

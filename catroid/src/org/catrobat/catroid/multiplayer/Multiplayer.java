@@ -22,6 +22,10 @@
  */
 package org.catrobat.catroid.multiplayer;
 
+import org.catrobat.catroid.ProjectManager;
+import org.catrobat.catroid.formulaeditor.UserVariableShared;
+
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,12 +33,17 @@ import android.os.Message;
 public class Multiplayer {
 	public static final String SHARED_VARIABLE_NAME = "shared_variable_name";
 	public static final String SHARED_VARIABLE_VALUE = "shared_variable_value";
+	public static final int STATE_CONNECTED = 1001;
+
 	private MultiplayerBtManager multiplayerBtManager = null;
 	private static Handler btHandler;
 	private static boolean initialized = false;
+	private Activity activity;
+	private Handler recieverHandler;
 
-	public Multiplayer() {
-
+	public Multiplayer(Activity activity, Handler recieverHandler) {
+		this.activity = activity;
+		this.recieverHandler = recieverHandler;
 	}
 
 	public void createBtManager(String mac_address) {
@@ -46,6 +55,11 @@ public class Multiplayer {
 		}
 
 		multiplayerBtManager.connectToMACAddress(mac_address);
+		//move to multiplayerBtManger
+		// everything was OK
+		if (recieverHandler != null) {
+			sendState(STATE_CONNECTED);
+		}
 	}
 
 	public static synchronized void sendBtMessage(String name, double value) {
@@ -59,6 +73,20 @@ public class Multiplayer {
 		Message myMessage = btHandler.obtainMessage();
 		myMessage.setData(myBundle);
 		btHandler.sendMessage(myMessage);
+	}
+
+	public static void updateSharedVariable(String name, Double value) {
+		UserVariableShared sharedVariable = ProjectManager.getInstance().getCurrentProject().getUserVariables()
+				.getSharedVariabel(name);
+		sharedVariable.setValueWithoutSend(value);
+	}
+
+	protected void sendState(int message) {
+		Bundle myBundle = new Bundle();
+		myBundle.putInt("message", message);
+		Message myMessage = recieverHandler.obtainMessage();
+		myMessage.setData(myBundle);
+		recieverHandler.sendMessage(myMessage);
 	}
 
 }

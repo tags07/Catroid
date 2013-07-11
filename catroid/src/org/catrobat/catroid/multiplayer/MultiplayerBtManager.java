@@ -34,6 +34,7 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 public class MultiplayerBtManager {
 	private static final UUID CONNECTION_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -50,14 +51,18 @@ public class MultiplayerBtManager {
 
 	public void connectToMACAddress(String mac_address) {
 		BluetoothDevice multiplayerDevice = null;
+		btAdapter.startDiscovery();
 		multiplayerDevice = btAdapter.getRemoteDevice(mac_address);
+
 		try {
 			btSocket = multiplayerDevice.createRfcommSocketToServiceRecord(CONNECTION_UUID);
 			btSocket.connect();
 		} catch (IOException e) {
+			Log.d("Bluetooth", "socket exeption");
 			e.printStackTrace();
 			btSocket = null;
 		}
+
 		if (btSocket == null) {
 			try {
 				btServerSocket = btAdapter.listenUsingRfcommWithServiceRecord(MULTIPLAYER_BT_CONNECT, CONNECTION_UUID);
@@ -74,6 +79,7 @@ public class MultiplayerBtManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	public void sendBtMessage(Bundle message) {

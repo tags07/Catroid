@@ -24,6 +24,7 @@ package org.catrobat.catroid.multiplayer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 import android.util.Log;
 
@@ -43,7 +44,12 @@ public class MultiplayerBtReceiver extends Thread {
 			try {
 				receivedbytes = btInStream.read(buffer);
 
-				Log.d("BT Receiver", new String(buffer, 0, receivedbytes));
+				String receivedMessage = new String(buffer, 0, receivedbytes, "ASCII");
+				int startIndexValue = receivedMessage.indexOf(":") + 1;
+				String variableName = new String(receivedMessage.substring(0, startIndexValue - 2));
+				Double variableValue = ByteBuffer.wrap(buffer).getDouble(startIndexValue);
+				Log.d("BT Receiver", variableName + ":" + variableValue);
+				Multiplayer.updateSharedVariable(variableName, variableValue);
 				//mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
 			} catch (IOException e) {
 				// TODO close all sockets
