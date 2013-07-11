@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.formulaeditor;
 
+import org.catrobat.catroid.multiplayer.Multiplayer;
+
 import android.util.Log;
 
 public class UserVariableShared extends UserVariable {
@@ -42,6 +44,7 @@ public class UserVariableShared extends UserVariable {
 		// TODO
 		// send Value over Bluetooth to other device
 		Log.d("SHARED", "Value changed!");
+		Multiplayer.sendBtMessage(super.getName(), value);
 	}
 
 	@Override

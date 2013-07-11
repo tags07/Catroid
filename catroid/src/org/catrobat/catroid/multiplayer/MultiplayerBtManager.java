@@ -24,12 +24,16 @@ package org.catrobat.catroid.multiplayer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 public class MultiplayerBtManager {
 	private static final UUID CONNECTION_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -72,13 +76,29 @@ public class MultiplayerBtManager {
 		}
 	}
 
-	public void sendMessage(String message) {
+	public void sendBtMessage(Bundle message) {
 		try {
-			btSocket.getOutputStream().write(message.getBytes());
+			byte[] bytes = new byte[1024];
+			String variableName = message.getString(Multiplayer.SHARED_VARIABLE_NAME) + ":";
+			ByteBuffer.wrap(bytes).put(variableName.getBytes());
+			ByteBuffer.wrap(bytes).putDouble(variableName.length(),
+					message.getDouble(Multiplayer.SHARED_VARIABLE_VALUE));
+			btSocket.getOutputStream().write(bytes, 0, variableName.length() + 8);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
+	public Handler getHandler() {
+		return myHandler;
+	}
+
+	private final Handler myHandler = new Handler() {
+		@Override
+		public void handleMessage(Message myMessage) {
+			sendBtMessage(myMessage.getData());
+		}
+	};
 
 }

@@ -34,6 +34,7 @@ import org.catrobat.catroid.bluetooth.BluetoothManager;
 import org.catrobat.catroid.bluetooth.DeviceListActivity;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
+import org.catrobat.catroid.multiplayer.Multiplayer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -60,6 +61,7 @@ public class PreStageActivity extends Activity {
 
 	private int requiredResourceCounter;
 	private static LegoNXT legoNXT;
+	private static Multiplayer multiplayer;
 	private ProgressDialog connectingProgressDialog;
 	private static TextToSpeech textToSpeech;
 	private static OnUtteranceCompletedListenerContainer onUtteranceCompletedListenerContainer;
@@ -228,6 +230,9 @@ public class PreStageActivity extends Activity {
 								break;
 							case Brick.BLUETOOTH_MULTIPLAYER:
 								// TODO: multiplayer, Bluetoothsockets
+								multiplayer = new Multiplayer();
+								address = data.getExtras().getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+								multiplayer.createBtManager(address);
 								break;
 						}
 						break;

@@ -22,20 +22,37 @@
  */
 package org.catrobat.catroid.multiplayer;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+
 public class Multiplayer {
+	public static final String SHARED_VARIABLE_NAME = "shared_variable_name";
+	public static final String SHARED_VARIABLE_VALUE = "shared_variable_value";
 	private MultiplayerBtManager multiplayerBtManager = null;
+	private static Handler btHandler;
+
+	public Multiplayer() {
+
+	}
 
 	public void createBtManager(String mac_address) {
 
 		if (multiplayerBtManager == null) {
 			multiplayerBtManager = new MultiplayerBtManager();
+			btHandler = multiplayerBtManager.getHandler();
 		}
 
 		multiplayerBtManager.connectToMACAddress(mac_address);
 	}
 
-	public void sendMessage() {
-		multiplayerBtManager.sendMessage("My first message sent!");
+	public static synchronized void sendBtMessage(String name, double value) {
+		Bundle myBundle = new Bundle();
+		myBundle.putString(SHARED_VARIABLE_NAME, name);
+		myBundle.putDouble(SHARED_VARIABLE_VALUE, value);
+		Message myMessage = btHandler.obtainMessage();
+		myMessage.setData(myBundle);
+		btHandler.sendMessage(myMessage);
 	}
 
 }
