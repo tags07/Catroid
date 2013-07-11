@@ -48,6 +48,7 @@ import org.catrobat.catroid.content.bricks.ForeverBrick;
 import org.catrobat.catroid.content.bricks.GlideToBrick;
 import org.catrobat.catroid.content.bricks.GoNStepsBackBrick;
 import org.catrobat.catroid.content.bricks.HideBrick;
+import org.catrobat.catroid.content.bricks.IfAnswerLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfLogicBeginBrick;
 import org.catrobat.catroid.content.bricks.IfOnEdgeBounceBrick;
 import org.catrobat.catroid.content.bricks.LegoNxtMotorActionBrick;
@@ -119,8 +120,9 @@ public class CategoryBricksFactory {
 
 		controlBrickList.add(new NoteBrick(sprite, context.getString(R.string.brick_note_default_value)));
 		controlBrickList.add(new AskBrick(sprite, context.getString(R.string.brick_ask_default_value)));
-		controlBrickList.add(new ForeverBrick(sprite));
 		controlBrickList.add(new IfLogicBeginBrick(sprite, 0));
+		controlBrickList.add(new ForeverBrick(sprite));
+		controlBrickList.add(new IfAnswerLogicBeginBrick(sprite, ""));
 		controlBrickList.add(new RepeatBrick(sprite, BrickValues.REPEAT));
 
 		return controlBrickList;

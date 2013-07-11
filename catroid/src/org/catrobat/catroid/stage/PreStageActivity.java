@@ -93,6 +93,9 @@ public class PreStageActivity extends Activity {
 
 			}
 		}
+		if ((required_resources & Brick.SPEECH_RECOGNITION) > 0) {
+			resourceInitialized();
+		}
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
 		}

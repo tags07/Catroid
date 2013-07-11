@@ -22,12 +22,14 @@
  */
 package org.catrobat.catroid.content.bricks;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.catrobat.catroid.R;
-import org.catrobat.catroid.content.Script;
+import org.catrobat.catroid.common.BrickValues;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
+import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.dialogs.BrickTextDialog;
 
@@ -45,20 +47,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
-public class AskBrick extends BrickBaseType {
+public class IfAnswerLogicBeginBrick extends IfLogicBeginBrick {
 	private static final long serialVersionUID = 1L;
-	private String question = "";
+	private String answerPrediction;
 
-	private transient View prototypeView;
-
-	public AskBrick(Sprite sprite) {
+	public IfAnswerLogicBeginBrick(Sprite sprite, String suggestion) {
+		super(sprite, new Formula(1));
 		this.sprite = sprite;
-	}
-
-	public AskBrick() {
-
+		answerPrediction = suggestion;
 	}
 
 	@Override
@@ -66,29 +65,26 @@ public class AskBrick extends BrickBaseType {
 		return SPEECH_RECOGNITION;
 	}
 
-	public AskBrick(Sprite sprite, String question) {
-		this.sprite = sprite;
-		this.question = question;
+	@Override
+	public Brick clone() {
+		return new IfAnswerLogicBeginBrick(sprite, answerPrediction);
 	}
 
 	@Override
-	public Brick copyBrickForSprite(Sprite sprite, Script script) {
-		AskBrick copyBrick = (AskBrick) clone();
-		return copyBrick;
-	}
-
-	@Override
-	public View getView(final Context context, int brickId, BaseAdapter baseAdapter) {
+	public View getView(Context context, int brickId, BaseAdapter baseAdapter) {
 		if (animationState) {
 			return view;
 		}
+		if (view == null) {
+			alphaValue = 255;
+		}
 
-		view = View.inflate(context, R.layout.brick_ask, null);
+		view = View.inflate(context, R.layout.brick_if_answer, null);
 		view = getViewWithAlpha(alphaValue);
 
-		setCheckboxView(R.id.brick_ask_checkbox);
-
+		setCheckboxView(R.id.brick_if_answer_begin_checkbox);
 		final Brick brickInstance = this;
+
 		checkbox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -97,14 +93,14 @@ public class AskBrick extends BrickBaseType {
 			}
 		});
 
-		TextView textHolder = (TextView) view.findViewById(R.id.brick_ask_prototype_text_view);
-		EditText editText = (EditText) view.findViewById(R.id.brick_ask_edit_text);
-		editText.setText(question);
+		TextView prototypeTextView = (TextView) view.findViewById(R.id.brick_if_answer_begin_prototype_text_view);
+		EditText ifBeginEditText = (EditText) view.findViewById(R.id.brick_if_answer_begin_edit_text);
+		ifBeginEditText.setText(answerPrediction);
 
-		textHolder.setVisibility(View.GONE);
-		editText.setVisibility(View.VISIBLE);
+		prototypeTextView.setVisibility(View.GONE);
+		ifBeginEditText.setVisibility(View.VISIBLE);
 
-		editText.setOnClickListener(new OnClickListener() {
+		ifBeginEditText.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -116,7 +112,7 @@ public class AskBrick extends BrickBaseType {
 				BrickTextDialog editDialog = new BrickTextDialog() {
 					@Override
 					protected void initialize() {
-						input.setText(question);
+						input.setText(answerPrediction);
 						input.setSelectAllOnFocus(true);
 					}
 
@@ -144,7 +140,7 @@ public class AskBrick extends BrickBaseType {
 
 					@Override
 					protected boolean handleOkButton() {
-						question = (input.getText().toString()).trim();
+						answerPrediction = (input.getText().toString()).trim();
 						return true;
 					}
 				};
@@ -158,17 +154,17 @@ public class AskBrick extends BrickBaseType {
 
 	@Override
 	public View getViewWithAlpha(int alphaValue) {
-		LinearLayout layout = (LinearLayout) view.findViewById(R.id.brick_ask_layout);
+		LinearLayout layout = (LinearLayout) view.findViewById(R.id.brick_if_answer_begin_layout);
 		Drawable background = layout.getBackground();
 		background.setAlpha(alphaValue);
 
-		TextView askPreLabel = (TextView) view.findViewById(R.id.brick_ask_pre_text_view);
-		EditText noteEditText = (EditText) view.findViewById(R.id.brick_ask_edit_text);
-		TextView askPostLabel = (TextView) view.findViewById(R.id.brick_ask_post_text_view);
-		askPreLabel.setTextColor(askPreLabel.getTextColors().withAlpha(alphaValue));
-		askPostLabel.setTextColor(askPostLabel.getTextColors().withAlpha(alphaValue));
-		noteEditText.setTextColor(noteEditText.getTextColors().withAlpha(alphaValue));
-		noteEditText.getBackground().setAlpha(alphaValue);
+		TextView ifLabel = (TextView) view.findViewById(R.id.if_answer_label);
+		TextView ifLabelEnd = (TextView) view.findViewById(R.id.if_answer_label_second_part);
+		EditText editX = (EditText) view.findViewById(R.id.brick_if_answer_begin_edit_text);
+		ifLabel.setTextColor(ifLabel.getTextColors().withAlpha(alphaValue));
+		ifLabelEnd.setTextColor(ifLabelEnd.getTextColors().withAlpha(alphaValue));
+		editX.setTextColor(editX.getTextColors().withAlpha(alphaValue));
+		editX.getBackground().setAlpha(alphaValue);
 
 		this.alphaValue = (alphaValue);
 		return view;
@@ -176,20 +172,31 @@ public class AskBrick extends BrickBaseType {
 
 	@Override
 	public View getPrototypeView(Context context) {
-		prototypeView = View.inflate(context, R.layout.brick_ask, null);
-		TextView textSpeak = (TextView) prototypeView.findViewById(R.id.brick_ask_prototype_text_view);
-		textSpeak.setText(question);
+		View prototypeView = View.inflate(context, R.layout.brick_if_answer, null);
+		TextView textIfBegin = (TextView) prototypeView.findViewById(R.id.brick_if_answer_begin_prototype_text_view);
+		textIfBegin.setText(String.valueOf(BrickValues.IF_CONDITION));
 		return prototypeView;
 	}
 
 	@Override
-	public Brick clone() {
-		return new AskBrick(this.sprite, this.question);
+	public void onClick(View view) {
+		if (checkbox.getVisibility() == View.VISIBLE) {
+			return;
+		}
 	}
 
 	@Override
 	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.ask(sprite, question));
-		return null;
+		SequenceAction ifAction = ExtendedActions.sequence();
+		SequenceAction elseAction = ExtendedActions.sequence();
+		Action action = ExtendedActions.ifAnswerLogic(sprite, answerPrediction, ifAction, elseAction); //TODO finish!!!
+		sequence.addAction(action);
+
+		LinkedList<SequenceAction> returnActionList = new LinkedList<SequenceAction>();
+		returnActionList.add(elseAction);
+		returnActionList.add(ifAction);
+
+		return returnActionList;
 	}
+
 }

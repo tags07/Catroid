@@ -338,6 +338,14 @@ public class ExtendedActions extends Actions {
 		return action;
 	}
 
+	static public IfAnswerLogicAction ifAnswerLogic(Sprite sprite, String prediction, Action ifAction, Action elseAction) {
+		IfAnswerLogicAction action = action(IfAnswerLogicAction.class);
+		action.setIfAction(ifAction);
+		action.setIfCondition(prediction);
+		action.setElseAction(elseAction);
+		return action;
+	}
+
 	static public RepeatAction repeat(Sprite sprite, Formula count, Action repeatedAction) {
 		RepeatAction action = action(RepeatAction.class);
 		action.setRepeatCount(count);
@@ -364,7 +372,6 @@ public class ExtendedActions extends Actions {
 	public static AskAction ask(Sprite sprite, String question) {
 		AskAction action = action(AskAction.class);
 		action.setQuestion(question);
-		action.setSprite(sprite);
 		return action;
 	}
 }

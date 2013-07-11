@@ -22,24 +22,15 @@
  */
 package org.catrobat.catroid.content.actions;
 
-import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.utils.UtilSpeechRecognition;
 
-import android.util.Log;
+import com.badlogic.gdx.scenes.scene2d.Action;
 
-import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
+public class AskAction extends Action {
 
-public class AskAction extends TemporalAction {
-
-	private static final String TAG = AskAction.class.getSimpleName();
-	private Sprite sprite;
 	private String question;
-	private String answer;
-
-	@Override
-	protected void update(float percent) {
-		UtilSpeechRecognition.getInstance().recognise(this);
-	}
+	private boolean pendingResult = false;
+	private boolean gotAnswer = false;
 
 	public void setQuestion(String question) {
 		this.question = question;
@@ -49,12 +40,23 @@ public class AskAction extends TemporalAction {
 		return question;
 	}
 
-	public void setSprite(Sprite sprite) {
-		this.sprite = sprite;
+	public void onRecognizeResult() {
+		gotAnswer = true;
 	}
 
-	public void setAnswer(String answer) {
-		this.answer = answer;
-		Log.v(TAG, "Got best answer: " + this.answer);
+	@Override
+	public void restart() {
+		pendingResult = false;
+		gotAnswer = false;
+		super.restart();
+	}
+
+	@Override
+	public boolean act(float delta) {
+		if (!pendingResult) {
+			UtilSpeechRecognition.getInstance().recognise(this);
+			pendingResult = true;
+		}
+		return gotAnswer;
 	}
 }

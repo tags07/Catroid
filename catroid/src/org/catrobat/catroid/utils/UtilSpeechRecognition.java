@@ -22,6 +22,8 @@
  */
 package org.catrobat.catroid.utils;
 
+import java.util.ArrayList;
+
 import org.catrobat.catroid.content.actions.AskAction;
 import org.catrobat.catroid.stage.StageActivity;
 
@@ -29,6 +31,9 @@ public class UtilSpeechRecognition {
 
 	private static UtilSpeechRecognition instance = null;
 	private StageActivity activeStage = null;
+	private String lastAnswer = "";
+	private String lastBestAnswer = "";
+	private ArrayList<AskAction> askerList = new ArrayList<AskAction>();
 
 	private UtilSpeechRecognition() {
 
@@ -41,12 +46,42 @@ public class UtilSpeechRecognition {
 		return instance;
 	}
 
+	public void onRecognitionResult(ArrayList<String> matches) {
+		lastBestAnswer = "";
+		lastAnswer = "";
+		AskAction initiator = askerList.get(0);
+		askerList.remove(initiator);
+		if (matches == null) {
+			initiator.onRecognizeResult();
+			return;
+		}
+
+		lastBestAnswer = matches.get(0);
+		for (String answer : matches) {
+			lastAnswer += " " + answer;
+		}
+		initiator.onRecognizeResult();
+	}
+
 	public void setStage(StageActivity stage) {
+		//new Stage, reset Results
+		lastBestAnswer = "";
+		lastAnswer = "";
+
 		this.activeStage = stage;
 	}
 
 	public synchronized void recognise(AskAction asker) {
-		activeStage.askForSpeechInput(asker);
+		askerList.add(asker);
+		activeStage.askForSpeechInput(asker.getQuestion());
 		return;
+	}
+
+	public String getLastAnswer() {
+		return instance.lastAnswer;
+	}
+
+	public String getLastBestAnswer() {
+		return instance.lastBestAnswer;
 	}
 }
