@@ -31,6 +31,7 @@ public class Multiplayer {
 	public static final String SHARED_VARIABLE_VALUE = "shared_variable_value";
 	private MultiplayerBtManager multiplayerBtManager = null;
 	private static Handler btHandler;
+	private static boolean initialized = false;
 
 	public Multiplayer() {
 
@@ -41,12 +42,17 @@ public class Multiplayer {
 		if (multiplayerBtManager == null) {
 			multiplayerBtManager = new MultiplayerBtManager();
 			btHandler = multiplayerBtManager.getHandler();
+			initialized = true;
 		}
 
 		multiplayerBtManager.connectToMACAddress(mac_address);
 	}
 
 	public static synchronized void sendBtMessage(String name, double value) {
+		if (initialized == false) {
+			return;
+		}
+
 		Bundle myBundle = new Bundle();
 		myBundle.putString(SHARED_VARIABLE_NAME, name);
 		myBundle.putDouble(SHARED_VARIABLE_VALUE, value);
