@@ -78,7 +78,9 @@ public class Multiplayer {
 	public static void updateSharedVariable(String name, Double value) {
 		UserVariableShared sharedVariable = ProjectManager.getInstance().getCurrentProject().getUserVariables()
 				.getSharedVariabel(name);
-		sharedVariable.setValueWithoutSend(value);
+		if (sharedVariable != null) {
+			sharedVariable.setValueWithoutSend(value);
+		}
 	}
 
 	protected void sendState(int message) {

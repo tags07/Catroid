@@ -51,7 +51,7 @@ public class MultiplayerBtManager {
 
 	public void connectToMACAddress(String mac_address) {
 		BluetoothDevice multiplayerDevice = null;
-		btAdapter.startDiscovery();
+		btAdapter.cancelDiscovery();
 		multiplayerDevice = btAdapter.getRemoteDevice(mac_address);
 
 		try {
@@ -59,7 +59,7 @@ public class MultiplayerBtManager {
 			btSocket.connect();
 		} catch (IOException e) {
 			Log.d("Bluetooth", "socket exeption");
-			e.printStackTrace();
+
 			btSocket = null;
 		}
 

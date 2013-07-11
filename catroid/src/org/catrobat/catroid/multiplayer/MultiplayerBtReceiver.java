@@ -46,11 +46,13 @@ public class MultiplayerBtReceiver extends Thread {
 
 				String receivedMessage = new String(buffer, 0, receivedbytes, "ASCII");
 				int startIndexValue = receivedMessage.indexOf(":") + 1;
-				String variableName = new String(receivedMessage.substring(0, startIndexValue - 2));
+				String variableName = new String(receivedMessage.substring(0, startIndexValue - 1));
 				Double variableValue = ByteBuffer.wrap(buffer).getDouble(startIndexValue);
 				Log.d("BT Receiver", variableName + ":" + variableValue);
+				Log.d("BT Receiver", "-" + variableName + "-");
+				Log.d("BT Receiver", "-" + variableValue + "-");
 				Multiplayer.updateSharedVariable(variableName, variableValue);
-				//mHandler.obtainMessage(MESSAGE_READ, bytes, -1, buffer).sendToTarget();
+
 			} catch (IOException e) {
 				// TODO close all sockets
 				break;
