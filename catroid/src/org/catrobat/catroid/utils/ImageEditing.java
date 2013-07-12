@@ -137,9 +137,9 @@ public class ImageEditing {
 		Bitmap scaledBitmap = ImageEditing.getScaledBitmapFromPath(path, newWidth, newHeight, false);
 		StorageHandler.saveBitmapToImageFile(file, scaledBitmap);
 
-		double sampleSizeWidth = ((double) originalBackgroundImageDimensions[0]) / (double) newWidth;
-		double sampleSizeHeight = ((double) originalBackgroundImageDimensions[1]) / (double) newHeight;
-		return (1 / Math.max(sampleSizeWidth, sampleSizeHeight));
+		double sampleSizeWidth = ((double) originalBackgroundImageDimensions[0]) / ((double) newWidth);
+		double sampleSizeHeight = ((double) originalBackgroundImageDimensions[1]) / ((double) newHeight);
+		return (1d / Math.max(sampleSizeWidth, sampleSizeHeight));
 	}
 
 	public static void scaleImageFile(File file, double scaleFactor) throws FileNotFoundException {
