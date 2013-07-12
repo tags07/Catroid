@@ -28,15 +28,16 @@ import java.util.ArrayList;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.LookData;
+import org.catrobat.catroid.common.ScreenValues;
 import org.catrobat.catroid.common.SoundInfo;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.fragment.LookFragment;
 import org.catrobat.catroid.ui.fragment.SoundFragment;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
+import org.catrobat.catroid.utils.Utils;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.Display;
 import android.widget.ListAdapter;
 
 import com.jayway.android.robotium.solo.Solo;
@@ -153,7 +154,6 @@ public class DeleteDialogTest extends ActivityInstrumentationTestCase2<MainMenuA
 		assertEquals("The sound was not deleted from lookDataList", newCount, soundInfoList.size());
 	}
 
-	@SuppressWarnings("deprecation")
 	private void addLooksToProject() throws Exception {
 		imageFile = UiTestUtils.saveFileToProject(UiTestUtils.DEFAULT_TEST_PROJECT_NAME, "catroid_sunglasses.png",
 				RESOURCE_IMAGE, getActivity(), UiTestUtils.FileTypes.IMAGE);
@@ -173,9 +173,9 @@ public class DeleteDialogTest extends ActivityInstrumentationTestCase2<MainMenuA
 		lookDataList.add(lookData);
 		ProjectManager.INSTANCE.getFileChecksumContainer().addChecksum(lookData.getChecksum(),
 				lookData.getAbsolutePath());
-		Display display = getActivity().getWindowManager().getDefaultDisplay();
-		ProjectManager.INSTANCE.getCurrentProject().getXmlHeader().virtualScreenWidth = display.getWidth();
-		ProjectManager.INSTANCE.getCurrentProject().getXmlHeader().virtualScreenHeight = display.getHeight();
+		Utils.updateScreenWidthAndHeight(solo.getCurrentActivity());
+		ProjectManager.INSTANCE.getCurrentProject().getXmlHeader().virtualScreenWidth = ScreenValues.SCREEN_WIDTH;
+		ProjectManager.INSTANCE.getCurrentProject().getXmlHeader().virtualScreenHeight = ScreenValues.SCREEN_HEIGHT;
 	}
 
 	private void addSoundsToProject() throws Exception {

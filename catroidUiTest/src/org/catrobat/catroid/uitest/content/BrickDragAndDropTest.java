@@ -35,9 +35,9 @@ import org.catrobat.catroid.content.bricks.WaitBrick;
 import org.catrobat.catroid.ui.MainMenuActivity;
 import org.catrobat.catroid.ui.adapter.BrickAdapter;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
+import org.catrobat.catroid.utils.Utils;
 
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.Display;
 import android.widget.ListView;
 
 import com.jayway.android.robotium.solo.Solo;
@@ -123,10 +123,8 @@ public class BrickDragAndDropTest extends ActivityInstrumentationTestCase2<MainM
 		solo.clickOnScreen(20, yPositionList.get(1));
 		solo.clickOnText(solo.getString(R.string.brick_context_dialog_move_brick));
 
-		Display display = solo.getCurrentActivity().getWindowManager().getDefaultDisplay();
-
-		@SuppressWarnings("deprecation")
-		int height = display.getHeight();
+		Utils.updateScreenWidthAndHeight(solo.getCurrentActivity());
+		int height = ScreenValues.SCREEN_HEIGHT;
 
 		solo.sleep(200);
 		solo.drag(20, 20, 300, height - 20, 100);

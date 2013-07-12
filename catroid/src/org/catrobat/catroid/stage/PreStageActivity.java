@@ -169,7 +169,6 @@ public class PreStageActivity extends Activity {
 		return ressources;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.i("bt", "requestcode " + requestCode + " result code" + resultCode);
@@ -208,6 +207,7 @@ public class PreStageActivity extends Activity {
 			case REQUEST_TEXT_TO_SPEECH:
 				if (resultCode == TextToSpeech.Engine.CHECK_VOICE_DATA_PASS) {
 					textToSpeech = new TextToSpeech(getApplicationContext(), new OnInitListener() {
+						@SuppressWarnings("deprecation")
 						@Override
 						public void onInit(int status) {
 							onUtteranceCompletedListenerContainer = new OnUtteranceCompletedListenerContainer();

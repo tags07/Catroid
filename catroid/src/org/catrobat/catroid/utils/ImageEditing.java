@@ -60,7 +60,8 @@ public class ImageEditing {
 		return newBitmap;
 	}
 
-	public static Bitmap getScaledBitmapFromPath(String imagePath, int outputWidth, int outputHeight, boolean justScaleDown) {
+	public static Bitmap getScaledBitmapFromPath(String imagePath, int outputWidth, int outputHeight,
+			boolean justScaleDown) {
 		if (imagePath == null) {
 			return null;
 		}
@@ -128,5 +129,17 @@ public class ImageEditing {
 		Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), rotateMatrix,
 				true);
 		return rotatedBitmap;
+	}
+
+	public static double scaleImageFileAndReturnSampleSize(File file, int newWidth, int newHeight)
+			throws FileNotFoundException {
+		String path = file.getAbsolutePath();
+		int[] originalBackgroundImageDimensions = getImageDimensions(path);
+		Bitmap scaledBitmap = ImageEditing.getScaledBitmapFromPath(path, newWidth, newHeight, false);
+		StorageHandler.saveBitmapToImageFile(file, scaledBitmap);
+
+		double sampleSizeWidth = originalBackgroundImageDimensions[0] / (double) newWidth;
+		double sampleSizeHeight = originalBackgroundImageDimensions[1] / (double) newHeight;
+		return (1 / Math.max(sampleSizeWidth, sampleSizeHeight));
 	}
 }
