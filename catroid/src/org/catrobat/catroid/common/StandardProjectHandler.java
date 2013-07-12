@@ -91,12 +91,20 @@ public class StandardProjectHandler {
 
 		Sprite backgroundSprite = defaultProject.getSpriteList().get(0);
 
+		File backgroundFile = copyFromResourceInProject(projectName, Constants.IMAGE_DIRECTORY, backgroundName,
+				R.drawable.default_project_background, context);
+		backgroundImageScaleFactor = ImageEditing.scaleImageFileAndReturnSampleSize(backgroundFile.getAbsoluteFile(),
+				ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
+
 		File mole1File = copyFromResourceInProject(projectName, Constants.IMAGE_DIRECTORY, mole1Name,
 				R.drawable.default_project_mole_1, context);
+		ImageEditing.scaleImageFile(mole1File, backgroundImageScaleFactor);
 		File mole2File = copyFromResourceInProject(projectName, Constants.IMAGE_DIRECTORY, mole2Name,
 				R.drawable.default_project_mole_2, context);
+		ImageEditing.scaleImageFile(mole2File, backgroundImageScaleFactor);
 		File whackedMoleFile = copyFromResourceInProject(projectName, Constants.IMAGE_DIRECTORY, whackedMoleName,
 				R.drawable.default_project_mole_whacked, context);
+		ImageEditing.scaleImageFile(whackedMoleFile, backgroundImageScaleFactor);
 		File soundFile1 = copyFromResourceInProject(projectName, Constants.SOUND_DIRECTORY, soundName,
 				R.raw.default_project_sound_mole_1, context);
 		File soundFile2 = copyFromResourceInProject(projectName, Constants.SOUND_DIRECTORY, soundName,
@@ -105,10 +113,6 @@ public class StandardProjectHandler {
 				R.raw.default_project_sound_mole_3, context);
 		File soundFile4 = copyFromResourceInProject(projectName, Constants.SOUND_DIRECTORY, soundName,
 				R.raw.default_project_sound_mole_4, context);
-		File backgroundFile = copyFromResourceInProject(projectName, Constants.IMAGE_DIRECTORY, backgroundName,
-				R.drawable.default_project_background, context);
-		backgroundImageScaleFactor = ImageEditing.scaleImageFileAndReturnSampleSize(backgroundFile.getAbsoluteFile(),
-				ScreenValues.SCREEN_WIDTH, ScreenValues.SCREEN_HEIGHT);
 
 		copyFromResourceInProject(projectName, ".", StageListener.SCREENSHOT_AUTOMATIC_FILE_NAME,
 				R.drawable.default_project_screenshot, context, false);
@@ -175,8 +179,7 @@ public class StandardProjectHandler {
 		Script mole1WhenScript = new WhenScript(mole1Sprite);
 
 		// start script
-		SetSizeToBrick setSizeToBrick = new SetSizeToBrick(mole1Sprite, new Formula(
-				calculateValueRelativeToScaledBackground(30)));
+		SetSizeToBrick setSizeToBrick = new SetSizeToBrick(mole1Sprite, new Formula(30));
 		mole1StartScript.addBrick(setSizeToBrick);
 
 		ForeverBrick foreverBrick = new ForeverBrick(mole1Sprite);
