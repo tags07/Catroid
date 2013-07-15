@@ -31,9 +31,6 @@ import org.catrobat.catroid.content.bricks.SpeakBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 
-import android.util.Log;
-
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -125,16 +122,6 @@ public class ExtendedActions extends Actions {
 		GlideToAction action = action(GlideToAction.class);
 		action.setPosition(x, y);
 		action.setDuration(duration);
-		action.setSprite(sprite);
-		return action;
-	}
-
-	public static GlideToAction glideTo(Sprite sprite, Formula x, Formula y, Formula duration,
-			Interpolation interpolation) {
-		GlideToAction action = action(GlideToAction.class);
-		action.setPosition(x, y);
-		action.setDuration(duration);
-		action.setInterpolation(interpolation);
 		action.setSprite(sprite);
 		return action;
 	}
@@ -365,7 +352,6 @@ public class ExtendedActions extends Actions {
 
 	public static Action send_to_pc(Sprite sprite) {
 		SendToPcAction action = action(SendToPcAction.class);
-		Log.v("Reeesl", "wie oft?\n");
 		action.setSprite(sprite);
 		return action;
 	}
