@@ -568,6 +568,7 @@ public class SoundFragment extends ScriptActivityFragment implements OnSoundEdit
 
 		@Override
 		protected File doInBackground(String... path) {
+
 			File file = null;
 			try {
 				file = StorageHandler.getInstance().copySoundFile(path[0]);

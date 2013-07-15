@@ -34,6 +34,7 @@ import org.catrobat.catroid.bluetooth.BluetoothManager;
 import org.catrobat.catroid.bluetooth.DeviceListActivity;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.bricks.Brick;
+import org.catrobat.catroid.io.PcConnectionManager;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -60,6 +61,7 @@ public class PreStageActivity extends Activity {
 	private static LegoNXT legoNXT;
 	private ProgressDialog connectingProgressDialog;
 	private static TextToSpeech textToSpeech;
+	private static PcConnectionManager connect_man;
 	private static OnUtteranceCompletedListenerContainer onUtteranceCompletedListenerContainer;
 
 	private boolean autoConnect = false;
@@ -93,6 +95,30 @@ public class PreStageActivity extends Activity {
 
 			}
 		}
+		if ((required_resources & Brick.CONNECTION_TO_PC) > 0) {
+
+			connect_man = PcConnectionManager.getInstance(null);
+			connect_man.getRequestedIps();
+			if (!connect_man.setUpConnections() || !connect_man.addConnectionsToBricks()) {
+				connect_man.cancelConnections();
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage(getString(R.string.connection_to_pc_failed)).setCancelable(false)
+						.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int id) {
+								connect_man.broadcast();
+								connect_man.increaseSocketTimeout();
+								dialog.cancel();
+								resourceFailed();
+							}
+						});
+				AlertDialog alert = builder.create();
+				alert.show();
+			} else {
+				resourceInitialized();
+			}
+		}
+
 		if (requiredResourceCounter == Brick.NO_RESOURCES) {
 			startStage();
 		}
@@ -108,6 +134,7 @@ public class PreStageActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
+
 		super.onDestroy();
 
 	}
@@ -120,6 +147,9 @@ public class PreStageActivity extends Activity {
 		}
 		if (legoNXT != null) {
 			legoNXT.pauseCommunicator();
+		}
+		if (connect_man != null) {
+			connect_man.cancelConnections();
 		}
 	}
 
@@ -137,8 +167,6 @@ public class PreStageActivity extends Activity {
 	}
 
 	private synchronized void resourceInitialized() {
-		//Log.i("res", "Resource initialized: " + requiredResourceCounter);
-
 		requiredResourceCounter--;
 		if (requiredResourceCounter == 0) {
 			startStage();
@@ -173,7 +201,6 @@ public class PreStageActivity extends Activity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.i("bt", "requestcode " + requestCode + " result code" + resultCode);
-
 		switch (requestCode) {
 			case REQUEST_ENABLE_BLUETOOTH:
 				switch (resultCode) {

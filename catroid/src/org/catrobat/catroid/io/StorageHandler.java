@@ -81,6 +81,9 @@ import org.catrobat.catroid.content.bricks.PlaySoundBrick;
 import org.catrobat.catroid.content.bricks.PointInDirectionBrick;
 import org.catrobat.catroid.content.bricks.PointToBrick;
 import org.catrobat.catroid.content.bricks.RepeatBrick;
+import org.catrobat.catroid.content.bricks.SendBeginBrick;
+import org.catrobat.catroid.content.bricks.SendEndBrick;
+import org.catrobat.catroid.content.bricks.SendToPcBrick;
 import org.catrobat.catroid.content.bricks.SetBrightnessBrick;
 import org.catrobat.catroid.content.bricks.SetGhostEffectBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
@@ -184,6 +187,9 @@ public class StorageHandler {
 		xstream.alias("pointInDirectionBrick", PointInDirectionBrick.class);
 		xstream.alias("pointToBrick", PointToBrick.class);
 		xstream.alias("repeatBrick", RepeatBrick.class);
+		xstream.alias("sendBeginBrick", SendBeginBrick.class);
+		xstream.alias("sendEndBrick", SendEndBrick.class);
+		xstream.alias("sendToPcBrick", SendToPcBrick.class);
 		xstream.alias("setBrightnessBrick", SetBrightnessBrick.class);
 		xstream.alias("setGhostEffectBrick", SetGhostEffectBrick.class);
 		xstream.alias("setLookBrick", SetLookBrick.class);
@@ -252,14 +258,13 @@ public class StorageHandler {
 			saveLoadLock.unlock();
 			return false;
 		}
-
 		try {
 			String projectFile = xstream.toXML(project);
-
 			String projectDirectoryName = Utils.buildProjectPath(project.getName());
 			File projectDirectory = new File(projectDirectoryName);
 
 			if (!(projectDirectory.exists() && projectDirectory.isDirectory() && projectDirectory.canWrite())) {
+
 				projectDirectory.mkdir();
 
 				File imageDirectory = new File(Utils.buildPath(projectDirectoryName, Constants.IMAGE_DIRECTORY));
@@ -286,7 +291,6 @@ public class StorageHandler {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.e(TAG, "saveProject threw an exception and failed.");
 			saveLoadLock.unlock();
 			return false;
 		}

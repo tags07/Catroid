@@ -62,6 +62,7 @@ import org.catrobat.catroid.content.bricks.PointInDirectionBrick;
 import org.catrobat.catroid.content.bricks.PointInDirectionBrick.Direction;
 import org.catrobat.catroid.content.bricks.PointToBrick;
 import org.catrobat.catroid.content.bricks.RepeatBrick;
+import org.catrobat.catroid.content.bricks.SendToPcBrick;
 import org.catrobat.catroid.content.bricks.SetBrightnessBrick;
 import org.catrobat.catroid.content.bricks.SetGhostEffectBrick;
 import org.catrobat.catroid.content.bricks.SetLookBrick;
@@ -108,6 +109,7 @@ public class CategoryBricksFactory {
 	private List<Brick> setupControlCategoryList(Sprite sprite, Context context) {
 		List<Brick> controlBrickList = new ArrayList<Brick>();
 		controlBrickList.add(new WhenStartedBrick(sprite, null));
+		controlBrickList.add(new SendToPcBrick(sprite));
 		controlBrickList.add(new WhenBrick(sprite, null));
 		controlBrickList.add(new WaitBrick(sprite, BrickValues.WAIT));
 

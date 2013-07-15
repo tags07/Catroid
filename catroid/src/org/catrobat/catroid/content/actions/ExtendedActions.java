@@ -31,6 +31,8 @@ import org.catrobat.catroid.content.bricks.SpeakBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.UserVariable;
 
+import android.util.Log;
+
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -357,6 +359,13 @@ public class ExtendedActions extends Actions {
 		RepeatAction action = action(RepeatAction.class);
 		action.setIsForeverRepeat(true);
 		action.setAction(foreverSequence);
+		action.setSprite(sprite);
+		return action;
+	}
+
+	public static Action send_to_pc(Sprite sprite) {
+		SendToPcAction action = action(SendToPcAction.class);
+		Log.v("Reeesl", "wie oft?\n");
 		action.setSprite(sprite);
 		return action;
 	}
