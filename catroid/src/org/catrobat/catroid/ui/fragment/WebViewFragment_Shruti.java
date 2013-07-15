@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -91,12 +90,13 @@ public class WebViewFragment_Shruti extends SherlockFragment {
 				public void onPageFinished(WebView view, String url) {
 
 					theUrl = url;
-					Toast.makeText(getActivity(), theUrl, Toast.LENGTH_LONG).show();
+					//Toast.makeText(getActivity(), theUrl, Toast.LENGTH_LONG).show();
 					loadExternalProjectUri = Uri.parse(theUrl);
 					if (loadExternalProjectUri != null) {
 						if (theUrl.contains("download")) {
 							loadProgramFromExternalSource(loadExternalProjectUri);
 							mCallback.onArticleSelected(1);
+
 						}
 					}
 

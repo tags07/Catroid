@@ -274,7 +274,7 @@ public class MainMenuActivityFragment_Shruti extends SherlockFragment implements
 		if (!Utils.externalStorageAvailable()) {
 			return;
 		}
-		unbindDrawables(getActivity().findViewById(R.id.main_menu));
+		//unbindDrawables(getActivity().findViewById(R.id.main_menu));
 		System.gc();
 
 	}

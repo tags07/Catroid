@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -70,6 +69,8 @@ public class MainMenuActivity_Shruti extends SherlockFragmentActivity implements
 	}
 
 	String yourData;
+	public static BroadcastReceiver receiver;
+	public static int flag3 = -1;
 
 	/*
 	 * (non-Javadoc)
@@ -79,8 +80,8 @@ public class MainMenuActivity_Shruti extends SherlockFragmentActivity implements
 	@Override
 	public void onArticleSelected(int position) {
 		// TODO Auto-generated method stub
-
-		BroadcastReceiver receiver = new BroadcastReceiver() {
+		//	flag3 = -1;
+		receiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				yourData = intent.getStringExtra("tag");
@@ -90,8 +91,9 @@ public class MainMenuActivity_Shruti extends SherlockFragmentActivity implements
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("com.your.app.DATA_BROADCAST");
 		registerReceiver(receiver, filter);
+		flag3 = 1;
 		flag = position;
-		Toast.makeText(this, "flag = " + flag + "and " + "position = " + position, Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, "flag = " + flag + "and " + "position = " + position, Toast.LENGTH_LONG).show();
 		try {
 			if (flag == 1) {
 				String flag1 = yourData;
@@ -103,12 +105,23 @@ public class MainMenuActivity_Shruti extends SherlockFragmentActivity implements
 					ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 					ft.addToBackStack(null);
 					ft.commit();
+					//	flag = -1;
+					//flag1 = "null";
 
 				}
 			}
 		} catch (Exception e) {
-			Toast.makeText(this, "Error!!!!!!", Toast.LENGTH_LONG).show();
+			//Toast.makeText(this, "Error!!!!!!", Toast.LENGTH_LONG).show();
 		}
 
+	}
+
+	@Override
+	protected void onStop() {
+		if (flag3 == 1) {
+			unregisterReceiver(receiver);
+
+		}
+		super.onStop();
 	}
 }

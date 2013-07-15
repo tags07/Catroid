@@ -152,6 +152,7 @@ public class ProjectsListFragment extends SherlockListFragment implements OnProj
 		registerForContextMenu(getListView());
 		if (savedInstanceState != null) {
 			projectToEdit = (ProjectData) savedInstanceState.getSerializable(BUNDLE_ARGUMENTS_PROJECT_DATA);
+
 		}
 
 		initAdapter();

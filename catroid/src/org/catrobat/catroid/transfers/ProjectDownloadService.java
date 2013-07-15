@@ -123,17 +123,16 @@ public class ProjectDownloadService extends IntentService {
 			showDialog(R.string.error_project_download);
 			return;
 		}
-
 		Toast.makeText(this, R.string.success_project_download, Toast.LENGTH_SHORT).show();
 		Intent dataIntent = new Intent();
 		dataIntent.setAction("com.your.app.DATA_BROADCAST");
 		dataIntent.putExtra("tag", "1");
 		sendBroadcast(dataIntent);
 		super.onDestroy();
-
 	}
 
 	private void showDialog(int messageId) {
 		Toast.makeText(this, messageId, Toast.LENGTH_SHORT).show();
 	}
+
 }
