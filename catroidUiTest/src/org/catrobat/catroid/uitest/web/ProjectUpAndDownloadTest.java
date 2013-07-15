@@ -50,7 +50,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.test.FlakyTest;
 import android.test.UiThreadTest;
 import android.util.Log;
 import android.widget.EditText;
@@ -58,6 +57,7 @@ import android.widget.EditText;
 public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 	private static final String TEST_FILE_DOWNLOAD_URL = "http://catroidtest.ist.tugraz.at/catroid/download/";
 	private static final int LONG_TEST_SOUND = org.catrobat.catroid.uitest.R.raw.longsound;
+	private static final int statusCodeWrongLanguageVersion = 518;
 
 	private String testProject = UiTestUtils.PROJECTNAME1;
 	private String newTestProject = UiTestUtils.PROJECTNAME2;
@@ -97,16 +97,12 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		});
 	}
 
-	@FlakyTest(tolerance = 4)
+	//@FlakyTest(tolerance = 4)
 	public void testUploadProjectSuccessAndTokenReplacementAfterUpload() throws Throwable {
 		setServerURLToTestUrl();
 		createTestProject(testProject);
 		addABrickToProject();
-
-		//intent to the main activity is sent since changing activity orientation is not working
-		//after executing line "UiTestUtils.clickOnLinearLayout(solo, R.id.btn_action_home);" 
-		Intent intent = new Intent(getActivity(), MainMenuActivity.class);
-		getActivity().startActivity(intent);
+		goToMainMenuActivity();
 
 		UiTestUtils.createValidUser(getActivity());
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -124,7 +120,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		//downloadProject();
 	}
 
-	@FlakyTest(tolerance = 4)
+	//@FlakyTest(tolerance = 4)
 	public void testUploadProjectOldCatrobatLanguageVersion() throws Throwable {
 		setServerURLToTestUrl();
 
@@ -161,7 +157,6 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		boolean uploadErrorOccurred = solo.waitForText(solo.getString(R.string.error_project_upload));
 
 		int statusCode = 0;
-		int statusCodeWrongLanguageVersion = 518;
 		statusCode = (Integer) Reflection.getPrivateField(ServerCalls.getInstance(), "uploadStatusCode");
 		Log.v("statusCode=", "" + statusCode);
 
@@ -170,7 +165,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		UiTestUtils.clearAllUtilTestProjects();
 	}
 
-	@FlakyTest(tolerance = 4)
+	//@FlakyTest(tolerance = 4)
 	public void testRenameProjectNameAndDescriptionWhenUploading() throws Throwable {
 		setServerURLToTestUrl();
 
@@ -178,11 +173,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		String originalProjectDescription = testDescription;
 		createTestProject(originalProjectName);
 		ProjectManager.INSTANCE.getCurrentProject().setDescription(originalProjectDescription);
-
-		//intent to the main activity is sent since changing activity orientation is not working
-		//after executing line "UiTestUtils.clickOnLinearLayout(solo, R.id.btn_action_home);" 
-		Intent intent = new Intent(getActivity(), MainMenuActivity.class);
-		getActivity().startActivity(intent);
+		goToMainMenuActivity();
 
 		UiTestUtils.createValidUser(getActivity());
 
@@ -215,7 +206,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 				serverProjectDescription.equalsIgnoreCase(projectDescriptionSetWhenUploading));
 	}
 
-	@FlakyTest(tolerance = 4)
+	//@FlakyTest(tolerance = 4)
 	public void testRenameProjectDescriptionWhenUploading() throws Throwable {
 		setServerURLToTestUrl();
 
@@ -223,11 +214,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		String originalProjectDescription = testDescription;
 		createTestProject(projectName);
 		ProjectManager.INSTANCE.getCurrentProject().setDescription(originalProjectDescription);
-
-		//intent to the main activity is sent since changing activity orientation is not working
-		//after executing line "UiTestUtils.clickOnLinearLayout(solo, R.id.btn_action_home);" 
-		Intent intent = new Intent(getActivity(), MainMenuActivity.class);
-		getActivity().startActivity(intent);
+		goToMainMenuActivity();
 
 		UiTestUtils.createValidUser(getActivity());
 
@@ -257,17 +244,13 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 				serverProjectDescription.equalsIgnoreCase(projectDescriptionSetWhenUploading));
 	}
 
-	@FlakyTest(tolerance = 4)
+	//@FlakyTest(tolerance = 4)
 	public void testUpAndDownloadJapaneseUnicodeProject() throws Throwable {
 		setServerURLToTestUrl();
 
 		String testProject = UiTestUtils.JAPANESE_PROJECT_NAME;
 		createTestProject(testProject);
-
-		//intent to the main activity is sent since changing activity orientation is not working
-		//after executing line "UiTestUtils.clickOnLinearLayout(solo, R.id.btn_action_home);" 
-		Intent intent = new Intent(getActivity(), MainMenuActivity.class);
-		getActivity().startActivity(intent);
+		goToMainMenuActivity();
 
 		UiTestUtils.createValidUser(getActivity());
 
@@ -285,7 +268,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		assertTrue("Project name on server was changed", serverProjectName.equalsIgnoreCase(testProject));
 	}
 
-	@FlakyTest(tolerance = 4)
+	//@FlakyTest(tolerance = 4)
 	public void testDownload() throws Throwable {
 		setServerURLToTestUrl();
 
@@ -326,7 +309,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		assertTrue("Project was successfully downloaded", serverProjectName.equalsIgnoreCase(projectName));
 	}
 
-	@FlakyTest(tolerance = 4)
+	//@FlakyTest(tolerance = 4)
 	public void testUploadStandardProject() throws Throwable {
 		if (!createAndSaveStandardProject() || this.standardProject == null) {
 			fail("Standard project not created");
@@ -367,7 +350,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 
 	}
 
-	@FlakyTest(tolerance = 4)
+	//@FlakyTest(tolerance = 4)
 	public void testUploadModifiedStandardProject() throws Throwable {
 		if (!createAndSaveStandardProject() || this.standardProject == null) {
 			fail("Standard project not created");
@@ -458,9 +441,12 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		// change project to a non default state
 		Sprite firstSprite = ProjectManager.getInstance().getCurrentProject().getSpriteList().get(0);
 		Script firstScript = firstSprite.getScript(0);
-		firstScript.addBrick(new WaitBrick(firstSprite, 1000));
+		solo.sleep(500);
+		if (firstScript != null) {
+			firstScript.addBrick(new WaitBrick(firstSprite, 1000));
+		}
 
-		solo.clickOnText(solo.getString(R.string.main_menu_upload));
+		solo.clickOnButton(solo.getString(R.string.upload_button));
 		solo.waitForText(uploadDialogTitle);
 
 		// enter a new title
@@ -474,9 +460,10 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		solo.enterText(projectUploadDescription, uploadProjectDescription);
 
 		solo.clickOnButton(solo.getString(R.string.upload_button));
-		solo.sleep(500);
+		solo.waitForDialogToClose(2000);
 
-		boolean success = solo.waitForText(solo.getString(R.string.success_project_upload), 1, 50000);
+		//boolean success = solo.waitForText(solo.getString(R.string.success_project_upload), 1, 20000);
+		boolean success = waitForToast(solo.getString(R.string.success_project_upload), 3);
 		assertTrue("Upload failed. Internet connection?", success);
 		String resultString = (String) Reflection.getPrivateField(ServerCalls.getInstance(), "resultString");
 
@@ -564,4 +551,25 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		assertTrue("Original Directory does not exist.", downloadedDirectory.exists());
 		assertTrue("Original Project File does not exist.", downloadedProjectFile.exists());
 	}
+
+	private void goToMainMenuActivity() {
+		//intent to the main activity is sent since changing activity orientation is not working
+		//after executing line "UiTestUtils.clickOnLinearLayout(solo, R.id.btn_action_home);" 
+		Intent intent = new Intent(getActivity(), MainMenuActivity.class);
+		getActivity().startActivity(intent);
+	}
+
+	private boolean waitForToast(String toastMessage, int waits) {
+		boolean success = false;
+		//At the current robotium versions there is a maximum timeout of 20 seconds in a wait
+		//However, uploads/downloads may take longer. Therefore this method can wait longer than 20 seconds.
+		for (int wait = 0; wait < waits; wait++) {
+			success = solo.waitForText(toastMessage, 1, 20000);
+			if (success == true) {
+				break;
+			}
+		}
+		return success;
+	}
+
 }
