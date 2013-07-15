@@ -30,6 +30,7 @@ import org.catrobat.catroid.utils.StatusBarNotificationManager;
 import org.catrobat.catroid.utils.UtilZip;
 import org.catrobat.catroid.utils.Utils;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -38,6 +39,7 @@ import android.content.DialogInterface.OnKeyListener;
 import android.content.DialogInterface.OnShowListener;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +57,7 @@ public class OverwriteRenameDialog extends DialogFragment implements OnClickList
 
 	public static final String DIALOG_FRAGMENT_TAG = "overwrite_rename_look";
 
+	@SuppressLint("ValidFragment")
 	public OverwriteRenameDialog(Context context, String projectName, String zipFileString) {
 		super();
 		this.projectName = projectName;
@@ -152,7 +155,8 @@ public class OverwriteRenameDialog extends DialogFragment implements OnClickList
 			if (error) {
 				return false;
 			}
-			ProjectManager.INSTANCE.loadProject(projectText.getText().toString(), context, false);
+			boolean b = ProjectManager.INSTANCE.loadProject(projectText.getText().toString(), context, false);
+			Log.v("************", "OVERWR: " + projectName + " " + b);
 		}
 		Toast.makeText(context, R.string.success_project_download, Toast.LENGTH_SHORT).show();
 		dismiss();

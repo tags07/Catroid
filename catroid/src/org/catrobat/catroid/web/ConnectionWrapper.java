@@ -101,6 +101,10 @@ public class ConnectionWrapper {
 
 	public void doHttpPostFileDownload(String urlString, HashMap<String, String> postValues, String filePath,
 			ResultReceiver receiver, Integer notificationId, String projectName) throws IOException {
+		if (urlString == null || urlString.isEmpty()) {
+			Log.v(TAG, "url is empty - cannot download");
+			return;
+		}
 		HttpRequest request = HttpRequest.post(urlString);
 		File file = new File(filePath);
 		file.getParentFile().mkdirs();

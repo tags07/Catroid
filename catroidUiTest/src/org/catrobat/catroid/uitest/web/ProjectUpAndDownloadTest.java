@@ -86,7 +86,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 	public void tearDown() throws Exception {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		prefs.edit().putString(Constants.TOKEN, saveToken).commit();
-		super.tearDown();
+		//super.tearDown();
 	}
 
 	private void setServerURLToTestUrl() throws Throwable {
@@ -304,9 +304,13 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		UiTestUtils.clearAllUtilTestProjects();
 
 		downloadProjectAndReplace(projectName);
+		//String renamedProject = UiTestUtils.PROJECTNAME3;
+		//downloadProjectAndRename(projectName, renamedProject);
+
 		Project downloadedProject = StorageHandler.getInstance().loadProject(projectName);
 		String serverProjectName = downloadedProject.getName();
 		assertTrue("Project was successfully downloaded", serverProjectName.equalsIgnoreCase(projectName));
+
 	}
 
 	//@FlakyTest(tolerance = 4)
@@ -388,7 +392,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		solo.clickOnButton(uploadButtonText);
 
 		assertTrue("Upload of the modified standard project should be possible, but did not succeed",
-				solo.waitForText(solo.getString(R.string.success_project_upload), 0, 10000));
+				waitForToast(solo.getString(R.string.success_project_upload), 1));
 
 	}
 
@@ -478,9 +482,9 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		}
 	}
 
-	private void downloadProjectAndReplace(String projectName) {
+	private void downloadProjectAndReplace(String projectToDownload) {
 		String downloadUrl = TEST_FILE_DOWNLOAD_URL + serverProjectId + Constants.CATROBAT_EXTENTION;
-		downloadUrl += "?fname=" + projectName;
+		downloadUrl += "?fname=" + projectToDownload;
 
 		Intent intent = new Intent(getActivity(), MainMenuActivity.class);
 		intent.setAction(Intent.ACTION_VIEW);
@@ -495,9 +499,11 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		boolean waitResult = solo.waitForActivity("MainMenuActivity", 10000);
 		assertTrue("Download takes too long.", waitResult);
 		assertTrue("Download not successful.", solo.searchText(solo.getString(R.string.success_project_download)));
-		assertEquals("Testproject not loaded.", projectName, ProjectManager.getInstance().getCurrentProject().getName());
+		assertEquals("Testproject not loaded.", projectToDownload, ProjectManager.getInstance().getCurrentProject()
+				.getName());
+		solo.sleep(5000);
 
-		String projectPath = Constants.DEFAULT_ROOT + "/" + projectName;
+		String projectPath = Constants.DEFAULT_ROOT + "/" + projectToDownload;
 		File downloadedDirectory = new File(projectPath);
 		File downloadedProjectFile = new File(projectPath + "/" + Constants.PROJECTCODE_NAME);
 		assertTrue("Original Directory does not exist.", downloadedDirectory.exists());
@@ -505,9 +511,9 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 	}
 
 	@SuppressWarnings("unused")
-	private void downloadProject() {
+	private void downloadProjectAndRename(String projectToDownload, String renamedProjectName) {
 		String downloadUrl = TEST_FILE_DOWNLOAD_URL + serverProjectId + Constants.CATROBAT_EXTENTION;
-		downloadUrl += "?fname=" + newTestProject;
+		downloadUrl += "?fname=" + projectToDownload;
 
 		Intent intent = new Intent(getActivity(), MainMenuActivity.class);
 		intent.setAction(Intent.ACTION_VIEW);
@@ -517,7 +523,7 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		solo.sleep(5000);
 		assertTrue("OverwriteRenameDialog not shown.", solo.searchText(solo.getString(R.string.overwrite_text)));
 		solo.clickOnText(solo.getString(R.string.overwrite_rename));
-		assertTrue("No text field to enter new name.", solo.searchEditText(newTestProject));
+		assertTrue("No text field to enter new name.", solo.searchEditText(projectToDownload));
 
 		/*
 		 * TODO: Does not work when testing, but it works in practice
@@ -527,25 +533,25 @@ public class ProjectUpAndDownloadTest extends BaseActivityInstrumentationTestCas
 		 * solo.searchText(solo.getString(R.string.error_project_exists)));
 		 * solo.sleep(500);
 		 * solo.clickOnButton(solo.getString(R.string.close));
+		 * solo.waitForDialogToClose(1000);
 		 */
 
 		solo.sleep(500);
 		solo.clearEditText(0);
-		solo.enterText(0, testProject);
+		solo.enterText(0, renamedProjectName);
 		solo.clickOnButton(solo.getString(R.string.ok));
 
-		boolean waitResult = solo.waitForActivity("MainMenuActivity", 10000);
+		boolean waitResult = solo.waitForActivity("MainMenuActivity", 20000);
 		assertTrue("Download takes too long.", waitResult);
 		assertTrue("Download not successful.", solo.searchText(solo.getString(R.string.success_project_download)));
-		assertTrue("Testproject2 not loaded.", solo.searchText(newTestProject));
 
-		String projectPath = Constants.DEFAULT_ROOT + "/" + testProject;
+		String projectPath = Constants.DEFAULT_ROOT + "/" + projectToDownload;
 		File downloadedDirectory = new File(projectPath);
 		File downloadedProjectFile = new File(projectPath + "/" + Constants.PROJECTCODE_NAME);
 		assertTrue("Downloaded Directory does not exist.", downloadedDirectory.exists());
 		assertTrue("Downloaded Project File does not exist.", downloadedProjectFile.exists());
 
-		projectPath = Constants.DEFAULT_ROOT + "/" + newTestProject;
+		projectPath = Constants.DEFAULT_ROOT + "/" + renamedProjectName;
 		downloadedDirectory = new File(projectPath);
 		downloadedProjectFile = new File(projectPath + "/" + Constants.PROJECTCODE_NAME);
 		assertTrue("Original Directory does not exist.", downloadedDirectory.exists());
