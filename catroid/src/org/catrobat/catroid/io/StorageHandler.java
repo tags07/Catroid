@@ -258,13 +258,13 @@ public class StorageHandler {
 			saveLoadLock.unlock();
 			return false;
 		}
+
 		try {
 			String projectFile = xstream.toXML(project);
 			String projectDirectoryName = Utils.buildProjectPath(project.getName());
 			File projectDirectory = new File(projectDirectoryName);
 
 			if (!(projectDirectory.exists() && projectDirectory.isDirectory() && projectDirectory.canWrite())) {
-
 				projectDirectory.mkdir();
 
 				File imageDirectory = new File(Utils.buildPath(projectDirectoryName, Constants.IMAGE_DIRECTORY));
@@ -291,6 +291,7 @@ public class StorageHandler {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Log.e(TAG, "saveProject threw an exception and failed.");
 			saveLoadLock.unlock();
 			return false;
 		}

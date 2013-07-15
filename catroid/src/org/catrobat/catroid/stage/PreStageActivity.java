@@ -167,6 +167,8 @@ public class PreStageActivity extends Activity {
 	}
 
 	private synchronized void resourceInitialized() {
+		//Log.i("res", "Resource initialized: " + requiredResourceCounter);
+
 		requiredResourceCounter--;
 		if (requiredResourceCounter == 0) {
 			startStage();
