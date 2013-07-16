@@ -33,9 +33,9 @@ public class UtilSpeechRecognition {
 	private StageActivity activeStage = null;
 	private String lastAnswer = "";
 	private String lastBestAnswer = "";
-	private ArrayList<AskAction> askerList = new ArrayList<AskAction>();
+	protected ArrayList<AskAction> askerList = new ArrayList<AskAction>();
 
-	private UtilSpeechRecognition() {
+	protected UtilSpeechRecognition() {
 
 	}
 
@@ -64,10 +64,8 @@ public class UtilSpeechRecognition {
 	}
 
 	public void setStage(StageActivity stage) {
-		//new Stage, reset Results
 		lastBestAnswer = "";
 		lastAnswer = "";
-
 		this.activeStage = stage;
 	}
 
