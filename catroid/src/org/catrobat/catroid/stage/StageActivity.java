@@ -141,6 +141,7 @@ public class StageActivity extends AndroidApplication {
 					default:
 						Log.w(TAG, "unhandeld Recognizer resultCode " + resultCode);
 				}
+				stageListener.skipDynamicSamplingRateForActions();
 				this.resume();
 				break;
 			default:
