@@ -38,13 +38,13 @@ import org.catrobat.catroid.ui.ProgramMenuActivity;
 import org.catrobat.catroid.ui.ScriptActivity;
 import org.catrobat.catroid.ui.adapter.LookAdapter;
 import org.catrobat.catroid.ui.fragment.LookFragment;
+import org.catrobat.catroid.uitest.util.BaseActivityInstrumentationTestCase;
 import org.catrobat.catroid.uitest.util.Reflection;
 import org.catrobat.catroid.uitest.util.UiTestUtils;
 import org.catrobat.catroid.utils.Utils;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -54,7 +54,7 @@ import android.widget.TextView;
 
 import com.jayway.android.robotium.solo.Solo;
 
-public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {
+public class LookFragmentTest extends BaseActivityInstrumentationTestCase<MainMenuActivity> {
 	private static final int RESOURCE_IMAGE = org.catrobat.catroid.uitest.R.drawable.catroid_sunglasses;
 	private static final int RESOURCE_IMAGE2 = org.catrobat.catroid.uitest.R.drawable.catroid_banzai;
 	private static final int RESOURCE_IMAGE3 = org.catrobat.catroid.uitest.R.drawable.catroid_sunglasses_jpg;
@@ -93,8 +93,6 @@ public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuA
 
 	private ProjectManager projectManager;
 
-	private Solo solo;
-
 	public LookFragmentTest() {
 		super(MainMenuActivity.class);
 	}
@@ -103,10 +101,8 @@ public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuA
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		UiTestUtils.prepareStageForTest();
-
-		UiTestUtils.clearAllUtilTestProjects();
 		UiTestUtils.createTestProject();
+		UiTestUtils.prepareStageForTest();
 
 		projectManager = ProjectManager.getInstance();
 		lookDataList = projectManager.getCurrentSprite().getLookDataList();
@@ -143,14 +139,13 @@ public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuA
 		projectManager.getCurrentProject().getXmlHeader().virtualScreenWidth = display.getWidth();
 		projectManager.getCurrentProject().getXmlHeader().virtualScreenHeight = display.getHeight();
 
-		solo = new Solo(getInstrumentation(), getActivity());
 		UiTestUtils.getIntoLooksFromMainMenu(solo, true);
 
 		copy = solo.getString(R.string.copy);
 		rename = solo.getString(R.string.rename);
 		renameDialogTitle = solo.getString(R.string.rename_look_dialog);
 		delete = solo.getString(R.string.delete);
-		deleteDialogTitle = solo.getString(R.string.delete_look_dialog);
+		deleteDialogTitle = solo.getString(R.string.dialog_confirm_delete_look_title);
 		editInPaintroid = solo.getString(R.string.edit_in_pocket_paint);
 
 		if (getLookAdapter().getShowDetails()) {
@@ -161,11 +156,8 @@ public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuA
 
 	@Override
 	public void tearDown() throws Exception {
-		solo.finishOpenedActivities();
-		UiTestUtils.clearAllUtilTestProjects();
 		paintroidImageFile.delete();
 		super.tearDown();
-		solo = null;
 	}
 
 	public void testInitialLayout() {
@@ -224,7 +216,7 @@ public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuA
 
 		clickOnContextMenuItem(testLookName, solo.getString(R.string.delete));
 		solo.waitForText(deleteDialogTitle);
-		solo.clickOnButton(solo.getString(R.string.ok));
+		solo.clickOnButton(solo.getString(R.string.yes));
 		solo.sleep(50);
 
 		int newCount = adapter.getCount();
@@ -369,8 +361,8 @@ public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuA
 
 	public void testEditImageInPaintroidThreeWorkflows() {
 
-		Reflection.setPrivateField(getLookFragment(), "pocketPaintIntentApplicationName", "destroy.intent");
-		Reflection.setPrivateField(getLookFragment(), "pocketPaintIntentActivityName", "for.science");
+		Reflection.setPrivateField(Constants.class, "POCKET_PAINT_PACKAGE_NAME", "destroy.intent");
+		Reflection.setPrivateField(Constants.class, "POCKET_PAINT_INTENT_ACTIVITY_NAME", "for.science");
 
 		solo.clickOnView(solo.getView(R.id.look_main_layout));
 		assertTrue("Paintroid not installed dialog missing after click on look",
@@ -961,6 +953,7 @@ public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuA
 		checkIfCheckboxesAreCorrectlyChecked(false, true);
 
 		UiTestUtils.acceptAndCloseActionMode(solo);
+		solo.clickOnButton(solo.getString(R.string.yes));
 		assertFalse("ActionMode didn't disappear", solo.waitForText(delete, 0, TIME_TO_WAIT));
 
 		checkIfNumberOfLooksIsEqual(expectedNumberOfLooks);
@@ -1008,6 +1001,7 @@ public class LookFragmentTest extends ActivityInstrumentationTestCase2<MainMenuA
 		solo.clickOnCheckBox(checkboxIndicesToCheck[2]);
 
 		UiTestUtils.acceptAndCloseActionMode(solo);
+		solo.clickOnButton(solo.getString(R.string.yes));
 		assertFalse("ActionMode didn't disappear", solo.waitForText(delete, 0, TIME_TO_WAIT));
 
 		checkIfNumberOfLooksIsEqual(expectedNumberOfLooks);
