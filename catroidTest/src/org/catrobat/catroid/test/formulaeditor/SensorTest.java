@@ -151,7 +151,23 @@ public class SensorTest extends InstrumentationTestCase {
 
 		double expectedCompassDirection = Double.valueOf(orientations[0]) * SensorHandler.radianToDegreeConst * -1f;
 		double expectedXInclination = Double.valueOf(orientations[2]) * SensorHandler.radianToDegreeConst * -1f;
-		double expectedYInclination = Double.valueOf(orientations[1]) * SensorHandler.radianToDegreeConst * -1f;
+		double expectedYInclination;
+
+		float xInclinationUsedToExtendRangeOfRoll = orientations[2] * SensorHandler.radianToDegreeConst * -1f;
+
+		Double sensorValue = Double.valueOf(orientations[1]);
+
+		if (java.lang.Math.abs(xInclinationUsedToExtendRangeOfRoll) <= 90f) {
+			expectedYInclination = sensorValue * SensorHandler.radianToDegreeConst * -1f;
+		} else {
+			float uncorrectedXInclination = sensorValue.floatValue() * SensorHandler.radianToDegreeConst * -1f;
+
+			if (uncorrectedXInclination > 0f) {
+				expectedYInclination = 180f - uncorrectedXInclination;
+			} else {
+				expectedYInclination = -180f - uncorrectedXInclination;
+			}
+		}
 
 		assertEquals(
 				"Unexpected sensor value for acceleration in x direction(= in portrait mode, from left to right side of screen surface, in m/s^2)",
