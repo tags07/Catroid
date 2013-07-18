@@ -37,7 +37,7 @@ import android.os.Message;
 import android.util.Log;
 
 public class MultiplayerBtManager {
-	public static final UUID CONNECTION_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	public static final UUID CONNECTION_UUID = UUID.fromString("a4eae22c-ac9d-424b-8e28-8b9fbc3d814f");
 	public static final String MULTIPLAYER_BT_CONNECT = "multiplayerBTConnect";
 
 	private BluetoothAdapter btAdapter = null;
