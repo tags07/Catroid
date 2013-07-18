@@ -27,9 +27,9 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,13 +37,13 @@ import android.os.Message;
 import android.util.Log;
 
 public class MultiplayerBtManager {
-	private static final UUID CONNECTION_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	private static final String MULTIPLAYER_BT_CONNECT = "multiplayerBTConnect";
+	public static final UUID CONNECTION_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+	public static final String MULTIPLAYER_BT_CONNECT = "multiplayerBTConnect";
 
-	private MultiplayerBtReceiver receiver = null;
 	private BluetoothAdapter btAdapter = null;
-	private BluetoothServerSocket btServerSocket = null;
 	private BluetoothSocket btSocket = null;
+	private InputStream btInStream = null;
+	private boolean connected = false;
 
 	public MultiplayerBtManager() {
 		this.btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -54,32 +54,53 @@ public class MultiplayerBtManager {
 		btAdapter.cancelDiscovery();
 		multiplayerDevice = btAdapter.getRemoteDevice(mac_address);
 
-		try {
-			btSocket = multiplayerDevice.createRfcommSocketToServiceRecord(CONNECTION_UUID);
-			btSocket.connect();
-		} catch (IOException e) {
-			Log.d("Bluetooth", "socket exeption");
-
-			btSocket = null;
-		}
-
-		if (btSocket == null) {
+		if (!connected) {
 			try {
-				btServerSocket = btAdapter.listenUsingRfcommWithServiceRecord(MULTIPLAYER_BT_CONNECT, CONNECTION_UUID);
-				btSocket = btServerSocket.accept();
+				btSocket = multiplayerDevice.createRfcommSocketToServiceRecord(CONNECTION_UUID);
+				btSocket.connect();
 			} catch (IOException e) {
+				Log.d("Bluetooth", "socket exeption");
 				e.printStackTrace();
+				btSocket = null;
 			}
+
+			connected = true;
 		}
 
 		try {
-			InputStream instream = btSocket.getInputStream();
-			receiver = new MultiplayerBtReceiver(instream);
-			receiver.start();
+			btInStream = btSocket.getInputStream();
+			//			receiver = new MultiplayerBtReceiver(instream);
+			messageReceiver.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
 
+	public void createInputOutputStreams(BluetoothSocket btSocket) {
+		connected = true;
+		this.btSocket = btSocket;
+
+		try {
+			btInStream = btSocket.getInputStream();
+			//			receiver = new MultiplayerBtReceiver(instream);
+			messageReceiver.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void destroyMultiplayerBTManager() {
+		connected = false;
+		if (btSocket != null) {
+			try {
+				btSocket.close();
+			} catch (IOException e) {
+				Log.e("Multiplayer", "Socket pointer not NULL, but couldn't be closed!");
+			}
+			btSocket = null;
+		}
+		btAdapter = null;
+		btInStream = null;
 	}
 
 	public void sendBtMessage(Bundle message) {
@@ -100,10 +121,41 @@ public class MultiplayerBtManager {
 		return myHandler;
 	}
 
+	@SuppressLint("HandlerLeak")
 	private final Handler myHandler = new Handler() {
 		@Override
 		public void handleMessage(Message myMessage) {
 			sendBtMessage(myMessage.getData());
+		}
+	};
+
+	private final Thread messageReceiver = new Thread() {
+		@Override
+		public void run() {
+			byte[] buffer = new byte[1024];
+			int receivedbytes = 0;
+
+			while (true) {
+				try {
+					receivedbytes = btInStream.read(buffer);
+					if (receivedbytes < 0) {
+						break;
+					}
+
+					String receivedMessage = new String(buffer, 0, receivedbytes, "ASCII");
+					int startIndexValue = receivedMessage.indexOf(":") + 1;
+					String variableName = new String(receivedMessage.substring(0, startIndexValue - 1));
+					Double variableValue = ByteBuffer.wrap(buffer).getDouble(startIndexValue);
+					Log.d("BT Receiver", variableName + ":" + variableValue);
+					Log.d("BT Receiver", "-" + variableName + "-");
+					Log.d("BT Receiver", "-" + variableValue + "-");
+					Multiplayer.updateSharedVariable(variableName, variableValue);
+
+				} catch (IOException e) {
+					Log.d("Multiplayer", "Receiver Thread END");
+					break;
+				}
+			}
 		}
 	};
 

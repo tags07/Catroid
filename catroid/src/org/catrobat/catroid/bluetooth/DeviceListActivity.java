@@ -42,19 +42,26 @@
  */
 package org.catrobat.catroid.bluetooth;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
 import org.catrobat.catroid.R;
+import org.catrobat.catroid.multiplayer.Multiplayer;
+import org.catrobat.catroid.multiplayer.MultiplayerBtManager;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -103,6 +110,12 @@ public class DeviceListActivity extends Activity {
 		scanButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				// Set device visible (only for testing her, but should be moved)
+				if (deviceTitle.equals(getResources().getString(R.string.select_device_multiplayer))) {
+					Intent discoverablIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+					startActivity(discoverablIntent);
+				}
+
 				doDiscovery();
 				v.setVisibility(View.GONE);
 			}
@@ -173,8 +186,10 @@ public class DeviceListActivity extends Activity {
 			this.setVisible(true);
 		}
 		autoConnect = true;
+		incomingBtConnection.start();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -183,6 +198,7 @@ public class DeviceListActivity extends Activity {
 			btAdapter.cancelDiscovery();
 		}
 
+		incomingBtConnection.destroy();
 		this.unregisterReceiver(mReceiver);
 	}
 
@@ -242,6 +258,45 @@ public class DeviceListActivity extends Activity {
 				}
 			}
 		}
+	};
+
+	private final Thread incomingBtConnection = new Thread() {
+		private BluetoothServerSocket btServerSocket = null;
+
+		@Override
+		public void run() {
+			Looper.prepare();
+
+			try {
+				btServerSocket = BluetoothAdapter.getDefaultAdapter().listenUsingRfcommWithServiceRecord(
+						MultiplayerBtManager.MULTIPLAYER_BT_CONNECT, MultiplayerBtManager.CONNECTION_UUID);
+				BluetoothSocket btSocket = btServerSocket.accept();
+				Multiplayer.getInstance().createBtManager(btSocket);
+
+				Intent intent = new Intent();
+				Bundle data = new Bundle();
+				data.putString(EXTRA_DEVICE_ADDRESS, "connected");
+				intent.putExtras(data);
+				setResult(RESULT_OK, intent);
+				finish();
+			} catch (IOException e) {
+				Log.d("Multiplayer", "ServerSocket closed!");
+			}
+
+			Looper.loop();
+		}
+
+		@Override
+		public void destroy() {
+			try {
+				if (btServerSocket != null) {
+					btServerSocket.close();
+				}
+			} catch (IOException e) {
+				Log.d("Multiplayer", "Thread for ServerSocket termination failed!");
+			}
+		}
+
 	};
 
 }
