@@ -352,6 +352,7 @@
     <!-- Control bricks -->
     <string name="brick_when_started">Wenn Programm gestartet</string>
     <string name="brick_send_to_pc">Sende an PC:</string>
+    <string name="brick_send">Sende:</string>
     <string name="brick_when">Wenn angetippt</string>
     <string name="brick_wait">Warte</string>
 

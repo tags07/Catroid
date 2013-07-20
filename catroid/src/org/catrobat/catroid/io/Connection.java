@@ -30,6 +30,10 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import com.example.wificonnect.Command;
+
+import android.util.Log;
+
 public class Connection extends Thread {
 	public static enum connectionState {
 		UNDEFINED, CONNECTED, UNCONNECTED
@@ -50,6 +54,7 @@ public class Connection extends Thread {
 		state = connectionState.UNDEFINED;
 		connectionManager = connect;
 		thisThread = this;
+		Thread.currentThread().setName("connection");
 	}
 
 	@Override
@@ -61,7 +66,19 @@ public class Connection extends Thread {
 			} else {
 				Thread.yield();
 			}
-
+			try {
+				Thread.sleep(1000L);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Log.v("Reeesl", "Connection\n");
+			Command test = new Command('a', Command.commandType.SINGLE_KEY);
+			try {
+				objectOutput.writeObject(test);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}	
 			//TODO handle in/output
 		}
 	}

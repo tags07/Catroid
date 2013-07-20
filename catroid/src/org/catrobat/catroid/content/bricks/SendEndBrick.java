@@ -28,6 +28,7 @@ import java.util.List;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.Script;
 import org.catrobat.catroid.content.Sprite;
+import org.catrobat.catroid.content.actions.ExtendedActions;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -175,9 +176,7 @@ public class SendEndBrick extends NestingBrick implements AllowedAfterDeadEndBri
 
 	@Override
 	public List<SequenceAction> addActionToSequence(SequenceAction sequence) {
-		//LinkedList<SequenceAction> returnActionList = new LinkedList<SequenceAction>();
-		//returnActionList.add(sequence);
-		//return returnActionList;
+		sequence.addAction(ExtendedActions.sendEnd(sprite));
 		return null;
 	}
 }

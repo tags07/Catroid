@@ -81,6 +81,7 @@ import org.catrobat.catroid.content.bricks.PlaySoundBrick;
 import org.catrobat.catroid.content.bricks.PointInDirectionBrick;
 import org.catrobat.catroid.content.bricks.PointToBrick;
 import org.catrobat.catroid.content.bricks.RepeatBrick;
+import org.catrobat.catroid.content.bricks.SendBrick;
 import org.catrobat.catroid.content.bricks.SendBeginBrick;
 import org.catrobat.catroid.content.bricks.SendEndBrick;
 import org.catrobat.catroid.content.bricks.SendToPcBrick;
@@ -187,6 +188,7 @@ public class StorageHandler {
 		xstream.alias("pointInDirectionBrick", PointInDirectionBrick.class);
 		xstream.alias("pointToBrick", PointToBrick.class);
 		xstream.alias("repeatBrick", RepeatBrick.class);
+		xstream.alias("send", SendBrick.class);
 		xstream.alias("sendBeginBrick", SendBeginBrick.class);
 		xstream.alias("sendEndBrick", SendEndBrick.class);
 		xstream.alias("sendToPcBrick", SendToPcBrick.class);

@@ -124,8 +124,8 @@ public class SendToPcBrick extends SendBeginBrick implements Broadcast {
 					ipToConnect = null;
 				}
 				if (sendSpinner.getSelectedItem().toString().equals(parent.getContext().getString(R.string.scan))) {
-					PcConnectionManager.getInstance(parent.getContext()).broadcast();
 					selectedItem = -1;
+					PcConnectionManager.getInstance(parent.getContext()).broadcast();
 				} else {
 					selectedItem = sendSpinner.getSelectedItemPosition();
 				}
@@ -250,6 +250,7 @@ public class SendToPcBrick extends SendBeginBrick implements Broadcast {
 				}
 				if (selectedItem != -1) {
 					sendSpinner.setSelection(selectedItem);
+					//Log.v("Reeesl", "selected item: " + selectedItem + "\n");
 				}
 				dataAdapter.add(context.getString(R.string.scan));
 			}
