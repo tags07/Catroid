@@ -46,7 +46,7 @@ public class UtilSpeechRecognition {
 		return instance;
 	}
 
-	public void onRecognitionResult(ArrayList<String> matches) {
+	public synchronized void onRecognitionResult(ArrayList<String> matches) {
 		lastBestAnswer = "";
 		lastAnswer = "";
 		AskAction initiator = askerList.get(0);

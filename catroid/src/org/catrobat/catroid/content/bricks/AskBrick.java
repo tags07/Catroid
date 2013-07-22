@@ -74,6 +74,7 @@ public class AskBrick extends BrickBaseType {
 	@Override
 	public Brick copyBrickForSprite(Sprite sprite, Script script) {
 		AskBrick copyBrick = (AskBrick) clone();
+		copyBrick.sprite = sprite;
 		return copyBrick;
 	}
 
